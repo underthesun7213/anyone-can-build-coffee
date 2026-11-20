@@ -1,12 +1,12 @@
 # anyone-can-build-coffee
 
-일본에서 **에스프레소 머신으로 커피를 내리는 카페**를, 어떤 머신(반자동·전자동)인지까지 가기 전에 확인할 수 있는 영어·일본어 카페 리스트를 기획하는 취미 프로젝트예요. 핸드드립·사이폰 같은 다른 추출 방식도 함께 기록하고, 일본 곳곳에 있는 체인 카페의 특징도 정리해요.
+일본에서 **에스프레소 머신으로 커피를 내리는 카페**를, 반자동인지 전자동인지까지 가기 전에 확인할 수 있는 영어·일본어 카페 리스트를 기획하는 학부생 사이드 프로젝트예요. 핸드드립·사이폰 같은 다른 추출 방식도 함께 기록하고, 일본 곳곳에 있는 체인 카페의 특징도 정리해요.
 
 A hobby project planning a bilingual (EN/JA) list of cafes in Japan that make espresso-based coffee on a machine — and which kind of machine — plus a guide to Japan's coffee chains.
 
 ## 현재 상태
 
-- **기획 단계.** 최신 문서는 [PRD v0.5](docs/prd/PRD-v0.5.md)예요.
+- **기획 단계.** 최신 문서는 [PRD v0.6](docs/prd/PRD-v0.6.md)예요.
 - 다음 단계는 **M0 조사**(4주)예요. 인터뷰 3명, 카페 30곳 불확실성 테스트, 공유 리스트 반응을 봐요. 진행 기준을 통과해야 개발(M1)을 시작해요.
 
 ## 문서
@@ -17,7 +17,8 @@ A hobby project planning a bilingual (EN/JA) list of cafes in Japan that make es
 | v0.2 | [PRD-v0.2](docs/prd/PRD-v0.2.md) | [CEO](docs/reviews/v0.2/1-CEO.md) · [CPO](docs/reviews/v0.2/2-CPO.md) · [CMO](docs/reviews/v0.2/3-CMO.md) · [CFO](docs/reviews/v0.2/4-CFO.md) · [CTO](docs/reviews/v0.2/5-CTO.md) |
 | v0.3 | [PRD-v0.3](docs/prd/PRD-v0.3.md) | [Planner (handoff readiness)](docs/reviews/v0.3/planner.md) |
 | v0.4 | [PRD-v0.4](docs/prd/PRD-v0.4.md) | — |
-| v0.5 | [PRD-v0.5](docs/prd/PRD-v0.5.md) | — |
+| v0.5 | [PRD-v0.5](docs/prd/PRD-v0.5.md) | [CEO](docs/reviews/v0.5/1-CEO.md) · [CPO](docs/reviews/v0.5/2-CPO.md) · [CMO](docs/reviews/v0.5/3-CMO.md) · [CFO](docs/reviews/v0.5/4-CFO.md) · [CTO](docs/reviews/v0.5/5-CTO.md) |
+| v0.6 | [PRD-v0.6](docs/prd/PRD-v0.6.md) | — |
 
 ## 조사
 

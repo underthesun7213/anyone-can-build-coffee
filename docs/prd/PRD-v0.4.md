@@ -255,6 +255,8 @@ Read from GoatCounter. The founder is excluded by the opt-out. Friends can't be 
 - ≥ 20% of the 30 cafes are unclear.
 - ≥ 50 opens from outside the founder's circle **and** ≥ 5 unprompted requests.
 
+**5. Google Ask Maps test.** Ask Google Maps' natural-language feature the brewing questions this product answers, check its answers against cafe websites, and record its weaknesses. Use Ask Maps as part of "find on Google" in the uncertainty test. Plan and criteria: [research/google-ask-maps.md](../research/google-ask-maps.md). The result decides whether the product has a real difference and whether the §15 "someone else solves it" condition should cover natural-language answers, not only filters.
+
 During M0, also choose the station data source and confirm the GoatCounter items marked **[verify in M1]**.
 
 ## 15. Limits and when to stop
@@ -275,7 +277,7 @@ During M0, also choose the station data source and confirm the GoatCounter items
 
 | Phase | Time | Output |
 |---|---|---|
-| M0 | 4 weeks | Interviews, uncertainty test, list test, name, station source, GoatCounter check → go / stop |
+| M0 | 4 weeks | Interviews, uncertainty test, list test, Ask Maps test, name, station source, GoatCounter check → go / stop |
 | M1 | ~4 weeks | 3 sheets with 25–30 cafes; SC-01–SC-05, 404, offline; F1–F6, F8; both languages |
 | M2 | 6 weeks | F7; launch posts; weekly posts |
 | M3 | Month 3 | Check §12 and §15; decide on a map and station pages |

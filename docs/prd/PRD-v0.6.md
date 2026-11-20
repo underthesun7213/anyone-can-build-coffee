@@ -1,6 +1,6 @@
 # PRD — Coffee brewing finder, Japan (working name)
 
-Status: Draft v0.6 · Date: 2026-11-20 · Owner: founder (solo, hobby) · Previous: [v0.5](PRD-v0.5.md)
+Status: Draft v0.6 · Date: 2026-11-20 · Revised 2026-11-20: M0 and M1 run in parallel (§14, §16, §19 #7) · Owner: founder (solo, hobby) · Previous: [v0.5](PRD-v0.5.md)
 
 > v0.6 applies the founder's decisions on the v0.5 reviews ([reviews/v0.5](../reviews/v0.5/)), listed in §19: M0 now tests the espresso question; the product records only *whether* a cafe makes espresso on a machine (semi-automatic or fully automatic), not the machine model; chain stores show their chain's information; there is no time budget; and the revenue wording is fixed. Items marked **[verify in M1]** depend on a tool's behaviour that hasn't been checked yet.
 
@@ -20,7 +20,7 @@ Status: Draft v0.6 · Date: 2026-11-20 · Owner: founder (solo, hobby) · Previo
 
 **Where it started:** the founder wants to drink coffee made on an espresso machine, 3–5 times a week. Finding out whether a cafe makes espresso on a machine — and what kind — takes 30+ minutes across maps, Instagram and reviews.
 
-**Evidence:** none yet beyond the founder. The one outside interview (a casual drinker) said it "wasn't a big problem." M0 (§14) decides whether to build.
+**Evidence:** none yet beyond the founder. The one outside interview (a casual drinker) said it "wasn't a big problem." M0 (§14) decides whether to launch publicly and keep building.
 
 ## 3. Users
 
@@ -275,7 +275,9 @@ Read from GoatCounter. The founder is excluded by the opt-out. Friends can't be 
 
 Whether espresso status is a useful question in this area — or whether almost every cafe here has a machine — is decided after the M0 data (§14, test 2), not before.
 
-## 14. M0 — discovery
+## 14. M0 — discovery (runs alongside M1)
+
+This is an undergraduate side project, so M0 and M1 run **at the same time**: the site is built while the tests below are done. The go rule still decides what happens next. It gates the public launch (M2), not the start of building.
 
 **1. Interviews: 3 coffee people.**
 - Recruit through X, Threads, specialty-cafe accounts, and in person at cafes in the launch area.
@@ -292,7 +294,7 @@ The second number answers the reviewers' guess that almost every cafe here has a
 
 **4. Names.** Test 3 name candidates with the interviewees. The name is fixed before anything public.
 
-**Go rule:** all three must hold, or M1 doesn't start.
+**Go rule:** all three must hold before the public launch (M2). If any fails, stop building, or go round the problem loop again and change the plan.
 - ≥ 2 of 3 interviewees rate the pain of finding espresso made on a machine ≥ 4.
 - ≥ 20% of the 30 cafes have an unclear espresso status.
 - ≥ 50 opens from outside the founder's circle **and** ≥ 5 unprompted requests.
@@ -301,11 +303,12 @@ The second number answers the reviewers' guess that almost every cafe here has a
 
 **6. Chain list.** List the chains with stores in the launch area and start the chain guide research ([research/chains.md](../research/chains.md)). This doesn't affect the go rule.
 
-During M0, also choose the station data source and confirm the GoatCounter items marked **[verify in M1]**.
+Early in M0/M1, also choose the station data source and confirm the GoatCounter items marked **[verify in M1]**.
 
 ## 15. Limits and when to stop
 
 - **Time:** no fixed budget. This is a side project; it moves at whatever pace the founder's schedule allows.
+- **M0 fails:** if the go rule in §14 isn't met, don't launch publicly; stop building or change the plan.
 - **Traffic:** fewer than **20 weekly visits at month 3** after launch → stop.
 - **Someone else solves it:** Google Maps or Tabelog lets people filter cafes in Shibuya by espresso machine type or brewing method → shut down. Checked once a quarter.
 
@@ -320,7 +323,7 @@ During M0, also choose the station data source and confirm the GoatCounter items
 
 **Milestones**
 
-No deadlines; phases happen in order.
+No deadlines. **M0 and M1 run at the same time.** M2 (public launch) starts only after M0's go rule passes; M3 follows M2.
 
 | Phase | Output |
 |---|---|
@@ -368,5 +371,6 @@ The v0.4 handoff answers in §17 still apply, except that the chain flag (`chain
 | 4 | Chain stores conflict with the required espresso status (CEO, CPO, CTO) | A store that differs from its chain is that store's issue; the app doesn't cover it. | §4, §5, §8 F2/F3/F9, §9: chain stores use the chain's information, have no method rows of their own, and are filtered by it. §13: chain stores don't count toward the 25–30. |
 | 5 | M1 needs 2–3× the hours it was given (CEO, CPO, CFO, CTO) | Drop the time budget; this is an undergraduate side project. | §1, §4 (old G3 removed), §12 (hours metric removed), §15, §16 (no deadlines). |
 | 6 | "No revenue" and "ads if costs grow" contradict (CFO) | No monetization for now; consider ads if costs appear later. | §1, §4. |
+| 7 | (Added after the review) M0 had to pass before any building | As an undergraduate side project, M0 and M1 run in parallel. The go rule now gates the public launch (M2) instead. | §2, §14, §15, §16. |
 
 Also fixed: §9 and §11 now say four sheets; goals renumbered (G1–G3).

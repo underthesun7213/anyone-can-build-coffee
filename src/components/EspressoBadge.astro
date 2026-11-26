@@ -1,0 +1,78 @@
+---
+// Espresso status badge (docs/plans/02-design.md §2.3): colour, text and icon.
+// The icon is decorative (aria-hidden); screen readers read the text.
+import { METHOD_LABELS, type Lang } from '../lib/codes.ts';
+
+type Status = 'espresso_semi' | 'espresso_auto' | 'espresso_none';
+
+interface Props {
+  lang: Lang;
+  status: Status;
+}
+
+const { lang, status } = Astro.props;
+
+const SHORT: Record<Status, { en: string; ja: string }> = {
+  espresso_semi: { en: 'Semi-automatic espresso', ja: 'セミオート' },
+  espresso_auto: { en: 'Fully automatic espresso', ja: '全自動' },
+  espresso_none: { en: 'No espresso machine — drip', ja: 'エスプレッソなし・ドリップ' },
+};
+const ICON: Record<Status, string> = {
+  espresso_semi: 'portafilter',
+  espresso_auto: 'button',
+  espresso_none: 'dripper',
+};
+---
+<span class={`badge badge-${status}`} data-status={status} data-method={status} title={METHOD_LABELS[status][lang]}>
+  <svg class="badge-icon" data-icon={ICON[status]} aria-hidden="true" focusable="false" viewBox="0 0 16 16" width="16" height="16">
+    {status === 'espresso_semi' && (
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M1.5 4.5h8v1.5a4 4 0 0 1-8 0z" />
+        <path d="M9.5 5.5h5" />
+        <path d="M4 12.5v1.5M7 12.5v1.5" />
+      </g>
+    )}
+    {status === 'espresso_auto' && (
+      <g fill="none" stroke="currentColor" stroke-width="1.6">
+        <rect x="2.5" y="2.5" width="11" height="11" rx="2.5" />
+        <circle cx="8" cy="8" r="2.2" fill="currentColor" stroke="none" />
+      </g>
+    )}
+    {status === 'espresso_none' && (
+      <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round">
+        <path d="M2.5 3h11l-4 6h-3z" />
+        <path d="M8 11.5v.5M8 14v.5" />
+      </g>
+    )}
+  </svg>
+  <span class="badge-text">{SHORT[status][lang]}</span>
+</span>
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-pill);
+    border: 1px solid transparent;
+    font-size: var(--text-sm);
+    font-weight: 700;
+    line-height: 1.4;
+  }
+  .badge-icon { flex: none; }
+  .badge-espresso_semi {
+    background: var(--status-semi-bg);
+    color: var(--status-semi-text);
+  }
+  .badge-espresso_auto {
+    background: var(--status-auto-bg);
+    color: var(--status-auto-text);
+    border-color: var(--status-auto-border);
+  }
+  .badge-espresso_none {
+    background: var(--status-none-bg);
+    color: var(--status-none-text);
+    font-weight: 600;
+  }
+</style>

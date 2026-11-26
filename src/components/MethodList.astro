@@ -1,4 +1,6 @@
 ---
+// Espresso methods as badges, other methods as chips (docs/plans/02-design.md §2.3, §2.4).
+import EspressoBadge from './EspressoBadge.astro';
 import { METHOD_LABELS, type Lang } from '../lib/codes.ts';
 import type { Method } from '../lib/load-data.ts';
 
@@ -10,6 +12,35 @@ interface Props {
 
 const { lang, methods, kind } = Astro.props;
 ---
-<ul class={`methods methods-${kind}`} data-kind={kind}>
-  {methods.map((m) => <li data-method={m.code}>{METHOD_LABELS[m.code][lang]}</li>)}
-</ul>
+{methods.length > 0 && (
+  <ul class={`methods methods-${kind}`} data-kind={kind}>
+    {methods.map((m) => (
+      <li>
+        {kind === 'espresso' ? (
+          <EspressoBadge lang={lang} status={m.code as 'espresso_semi' | 'espresso_auto' | 'espresso_none'} />
+        ) : (
+          <span class="chip" data-method={m.code}>{METHOD_LABELS[m.code][lang]}</span>
+        )}
+      </li>
+    ))}
+  </ul>
+)}
+
+<style>
+  .methods {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    list-style: none;
+    margin: 0 0 var(--space-2);
+    padding: 0;
+  }
+  .chip {
+    display: inline-block;
+    padding: 2px var(--space-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-pill);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+</style>

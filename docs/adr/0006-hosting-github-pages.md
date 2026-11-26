@@ -1,6 +1,6 @@
 # ADR-0006: GitHub Pages + GitHub Actions로 호스팅·배포한다
 
-- 상태: 제안됨
+- 상태: 승인됨 (2026-11-27, 창업자)
 - 날짜: 2026-11-20 (웹 사실 확인일 동일)
 - 근거: [PRD v0.6](../prd/PRD-v0.6.md) §1(수익 없음, 광고는 나중에 검토), §7(404), §11("free static hosting on a subdomain of the founder's personal domain"), §8 F5(수정 후 재배포)
 - 관련: [tech-stack.md](../architecture/tech-stack.md) §6, [ADR-0002](0002-four-sheet-data-model-and-csv-build.md), [ADR-0005](0005-static-site-generator-astro.md)
@@ -37,7 +37,7 @@
 |---|---|
 | Cloudflare Pages | 한도가 넉넉하고 `_headers`(커스텀 헤더)를 지원한다. 하지만 계정과 연동이 하나 더 필요하다. 지금 필요한 기능 중 GitHub Pages로 안 되는 것이 없다. **이전 1순위 대안**: 광고 도입 등으로 GitHub Pages 이용 조건이 맞지 않게 되면 옮긴다 |
 | Netlify Free | 배포 1회당 15 크레딧이라, 배포만으로 월 약 20회면 크레딧 300이 끝난다(계산값). 잦은 정정 배포와 맞지 않는다 |
-| Vercel 등 | 조사하지 않았다. 위 셋으로 충분하다 |
+| Vercel | 레포에 Vercel GitHub 연동이 이미 연결돼 있어 PR마다 미리보기 배포가 만들어지고 있었다(2026-11-27 확인). 창업자가 GitHub Pages로 결정했으므로 쓰지 않는다. 연동은 해제한다(아래 "후속 조치") |
 
 ## 결과
 
@@ -50,3 +50,7 @@
 - 레포가 공개여야 한다. 그래서 `internal_note` 같은 비공개 값이 레포에 들어오면 안 된다(ADR-0002).
 - 커스텀 응답 헤더(캐시 제어, 보안 헤더)와 서버 리다이렉트를 설정하는 방법이 확인한 문서에 없다(지원하지 않는 것으로 추정). 언어 이동은 클라이언트 스크립트로 한다.
 - 광고를 붙이면 "온라인 사업용이 아님" 조건과 부딪칠 수 있다. 그때 호스팅을 다시 판단한다.
+
+## 후속 조치
+
+- **Vercel 연동 해제:** 이 레포에는 Vercel GitHub 연동이 연결돼 있어 PR마다 미리보기 배포와 봇 코멘트가 생긴다. 배포 경로가 둘이 되지 않도록 Vercel 프로젝트 설정 또는 GitHub의 연동 설정에서 이 레포의 연결을 해제한다. 계정 설정이므로 창업자가 직접 한다.

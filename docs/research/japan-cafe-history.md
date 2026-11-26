@@ -53,6 +53,14 @@ Status: 조사 완료 (초안) · 확인일: 2026-11-27
 **핸드드립과 강배전 전통**
 - 깃사텐의 기본은 강배전에 핸드드립이나 사이펀 추출이다(2절 참고). ([JNTO](https://www.japan.travel/en/blog/kissaten-japans-old-school-coffee-shops/)) 시애틀계는 '풀시티 로스트' 정도의 강배전이 특징이라고 설명된다. ([ORICON](https://www.oricon.co.jp/special/55732/))
 
+**아이스커피: 아메리카노가 아니라 드립 (2026-11-27 추가)**
+- 일본의 아이스커피는 에스프레소보다 훨씬 먼저 생겼다. 메이지 24년(1891년) 빙수 가게 메뉴에 '氷コーヒー'가 있었다는 기록이 『明治事物起源』에 있다고 소개된다. ([Precious.jp](https://precious.jp/articles/-/13032)) 다이쇼 시대(1920년경)부터 깃사텐에서 아이스커피를 마셨다. ([Wikipedia: Iced coffee](https://en.wikipedia.org/wiki/Iced_coffee))
+- 차가운 차를 마시던 문화가 있어 커피를 차갑게 마시는 것이 자연스러웠다는 설명이 있다. 다만 '일본 발상'이라고 단정하기는 어렵다는 유보도 있다. ([Precious.jp](https://precious.jp/articles/-/13032), [ヤマハ発動機](https://global.yamaha-motor.com/jp/showroom/mt/stage/031.html))
+- 그래서 일본에서 '아이스커피'는 처음부터 드립·사이펀으로 진하게 내려 식힌 커피였다. 아이스 아메리카노는 1996년 스타벅스 이후 에스프레소 문화와 함께 들어온 메뉴다 **[해석]**.
+- 도토루도 이 방식이다. 주문 직전에 갈아 저온 추출한 뒤 냉각한다. ([ドトール公式](https://www.doutor.co.jp/dcs/taste/icedcoffee.html))
+- 미리 대량으로 내려 두면 산화로 향이 빠진다는 비판이 있고, 얼음 위에 바로 드립하는 '급랭식'을 권하는 쪽도 있다. ([マイナビ](https://news.mynavi.jp/article/20220519-2348003/), [Gizmodo Japan](https://www.gizmodo.jp/2023/07/iced-coffee.html))
+- **[추정]** 체인이 이 방식을 유지하는 이유로는 빠른 제공, "아이스커피 = 이 맛"이라는 손님의 기대, 강배전이 차갑게 마셔도 맛이 남는다는 점을 생각할 수 있다. 출처로 확인하지는 않았다.
+
 **편의점 커피와 가정 소비**
 - 세븐일레븐의 '세븐 카페'는 2013년 1월에 나왔다. 첫해 연 4.5억 잔에서 2018년도 11억 잔을 넘겼다. ([東洋経済](https://toyokeizai.net/articles/-/331280?display=b)) 2026년 10월 보도에서는 누적 100억 잔을 곧 넘길 것으로 전했다. ([マイナビニュース](https://news.mynavi.jp/article/20261016-5137604/))
 - 전일본커피협회 2024년 조사로는 1인당 1주일에 평균 10.05잔을 마신다. 인스턴트 3.83잔, 레귤러 3.55잔, 리퀴드 1.76잔, 캔 0.91잔이다(12–79세, 2022년부터 웹 조사). ([AJCA PDF](https://ajca.or.jp/pdf/data-juyodoko-gaiyo2024.pdf))

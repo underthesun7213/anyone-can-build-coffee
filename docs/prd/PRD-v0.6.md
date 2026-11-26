@@ -186,7 +186,7 @@ Four sheets in one spreadsheet — `cafes`, `chains`, `methods`, `stations` — 
 | Field | Notes |
 |---|---|
 | `id` | URL slug, e.g. `about-life-shibuya` |
-| `name_en`, `name_ja` | At least one required |
+| `name_en`, `name_ja` | Both required (decided 2026-11-27) |
 | `address_en`, `address_ja` | At least one required |
 | `lat`, `lng` | From OSM or geocoded from the published address; never from Google |
 | `coord_source` | `osm` or `geocoded` |
@@ -196,7 +196,7 @@ Four sheets in one spreadsheet — `cafes`, `chains`, `methods`, `stations` — 
 | `moved_to` | `id` of the new entry when `moved` |
 | `chain_id` | → `chains.id`; empty for independent cafes |
 | `cafe_url`, `social_url` | Optional |
-| `internal_note` | Never published |
+| `internal_note` | Not shown on the site, but public in the CSV and repo (decided 2026-11-27). Write only what may be public. |
 
 **`chains`** — one row per chain
 
@@ -239,7 +239,7 @@ Station source chosen in M1: OSM, MLIT 国土数値情報, or ekidata.jp, after 
 - **Routes:** `/en/…` and `/ja/…`. The site generator builds both.
 - **Root `/`:** goes to the language last chosen (localStorage). If none, `ja` when the browser's language is Japanese, otherwise `en`.
 - **Switch:** the header switch keeps the same page and query, e.g. `/en/cafe/x` ↔ `/ja/cafe/x`.
-- **Cafe names:** UI language first. If that language is missing, show the other one.
+- **Cafe names:** UI language first, the other below. Both names are required for cafes, chains and stations (decided 2026-11-27), so there is no fallback.
 - **Translations:** UI strings, method and source labels and empty states are kept in one strings file with EN and JA, translated by the founder.
 - **Also bilingual:** the Google Form and the privacy notice.
 - **Per-language page titles and descriptions** on every page.

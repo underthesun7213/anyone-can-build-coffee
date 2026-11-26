@@ -23,7 +23,7 @@ Basis: [PRD v0.6](../prd/PRD-v0.6.md) §7, §9, §10, §11 · [ADR-0001](../adr/
 | `src/lib/codes.ts` | method, source, status codes | add: the codes from PRD §5 and §6 with EN/JA labels |
 | `src/lib/load-data.ts` | `loadData` | add: parse the 4 CSVs, join methods to cafes and chains, a chain store takes its chain's methods (PRD §8 F3), compute `station_id` from coordinates. No Astro imports (ADR-0005) |
 | `src/lib/geo.ts` | `distanceMeters` | add: haversine distance, used for `station_id` now and F1 later |
-| `scripts/validate-data.ts` | | add: the rules in data-validation.md §4.1–§4.8; exits non-zero on any error, prints warnings and the §5 summary |
+| `scripts/validate-data.ts` | | add: the **error** rules in data-validation.md §4.1–§4.8; exits non-zero on any error and prints a short summary. Warning rules are a later plan |
 | `src/i18n/strings.ts` | | add: the UI strings these pages need, EN and JA |
 | `src/layouts/Base.astro` | | add: `<html lang>`, title, header with EN/JA switch, footer "Data last updated" |
 | `src/pages/index.astro` | | add: root — goes to the remembered language, else browser language (PRD §10) |
@@ -64,7 +64,9 @@ Basis: [PRD v0.6](../prd/PRD-v0.6.md) §7, §9, §10, §11 · [ADR-0001](../adr/
 **Added while building**
 - When a link field (`cafe_url`, `social_url`, `site_url`, `source_url`, `source_url_2`) is not an http(s) URL, validation should fail (`fails when a link is not an http(s) URL`). Added after an automated security review: links are rendered as `href`, so a `javascript:` value would run in the page.
 
-- Test count before: 0 . Test count when done: 14 (the 14 planned lines minus the 1 checked by hand, plus the 1 added while building). If building shows a test is needed that isn't listed, add it, name it here, and update this number. Never drop a listed test to keep the count.
+- When a sheet breaks any of the other error rules in data-validation.md §4.1–§4.8 (id not a slug, a future date, coordinates outside Japan, a non-decimal number, missing `coord_source`, a cafe moved to itself or a `moved_to` loop, a chain without `site_url` or `checked_at`, a station without `source`, the same method twice), validation should fail (`fails on the other error rules…`). Added after the code review found these rules missing.
+
+- Test count before: 0 . Test count when done: 15 (the 14 planned lines minus the 1 checked by hand, plus the 2 added while building). If building shows a test is needed that isn't listed, add it, name it here, and update this number. Never drop a listed test to keep the count.
 
 ## 4. Not in this plan
 
@@ -78,7 +80,9 @@ Basis: [PRD v0.6](../prd/PRD-v0.6.md) §7, §9, §10, §11 · [ADR-0001](../adr/
 - A custom subdomain (decision 3).
 - Any styling beyond readable defaults.
 - Showing each fact's source, link and checked date on the cafe page (founder's choice, 2026-11-27: next plan). The data still carries them and validation still checks them.
-- Closed and moved cafes: hiding them from the list, the "closed" notice and the link to the new entry (next plan).
+- Closed and moved cafes: the "closed" notice and the link to the new entry (next plan). The list already shows only active cafes.
+- Warning (W) rules and the §5 summary items for chains and stale rows (data-validation.md).
+- `astro check` and the post-build checks (data-validation.md §4.9) in `ci.yml`.
 - Automatic deploy on merge is built (`deploy.yml`) but isn't one of the Done-when lines.
 
 ## 5. Decisions for me

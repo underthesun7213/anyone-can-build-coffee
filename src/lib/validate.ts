@@ -1,9 +1,12 @@
 // Build-time data checks from docs/architecture/data-validation.md. Pure: takes
 // the raw tables and returns every problem at once (it doesn't stop at the first).
 //
-// Implemented in this plan (docs/plans/01-skeleton.md): columns, required fields,
-// codes, number and date formats, unique ids, references, both-language names,
-// espresso status, and chain stores having no method rows of their own.
+// Implemented in this plan (docs/plans/01-skeleton.md): the error (E) rules of
+// data-validation.md §4.1–§4.8 — columns, required fields, id slugs, codes, number
+// and date formats (no future dates), coordinates inside Japan, unique ids,
+// references and moved_to cycles, both-language names, http(s) links, duplicate
+// methods, espresso status, and chain stores having no method rows of their own.
+// Warning (W) rules come in a later plan.
 
 import { COORD_SOURCES, ESPRESSO_CODES, METHOD_CODES, SOURCE_CODES, STATUS_CODES } from './codes.ts';
 import { COLUMNS, SHEETS, type SheetName, type Tables } from './tables.ts';
@@ -27,8 +30,13 @@ function isValidDate(value: string): boolean {
   return !Number.isNaN(d.getTime()) && d.toISOString().startsWith(value);
 }
 
+const NUMBER_RE = /^-?\d+(\.\d+)?$/;
+const SLUG_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+// Rough bounding box of Japan (V-C05), so swapped lat/lng is caught.
+const JAPAN = { latMin: 20, latMax: 46, lngMin: 122, lngMax: 154 };
+
 function isNumber(value: string): boolean {
-  return value !== '' && Number.isFinite(Number(value));
+  return NUMBER_RE.test(value);
 }
 
 /** Only http(s) links may reach an href (blocks javascript:, data: and the like). */
@@ -47,7 +55,18 @@ const URL_FIELDS: Partial<Record<SheetName, readonly string[]>> = {
   methods: ['source_url', 'source_url_2'],
 };
 
-export function validate(tables: Tables, headers?: Partial<Record<SheetName, string[]>>): Issue[] {
+export interface ValidateOptions {
+  /** Latest allowed date as YYYY-MM-DD, for the no-future-dates rule. Defaults to tomorrow in UTC. */
+  today?: string;
+}
+
+export function validate(
+  tables: Tables,
+  headers?: Partial<Record<SheetName, string[]>>,
+  options: ValidateOptions = {},
+): Issue[] {
+  // Default: tomorrow in UTC, so a date written today in Japan (UTC+9) still passes on a UTC CI runner.
+  const today = options.today ?? new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString().slice(0, 10);
   const issues: Issue[] = [];
   const err = (sheet: SheetName, row: number, field: string | undefined, message: string) =>
     issues.push({ severity: 'error', sheet, row, field, message });
@@ -75,11 +94,27 @@ export function validate(tables: Tables, headers?: Partial<Record<SheetName, str
       err(sheet, rowNo(i), field, `unknown code "${value}" (allowed: ${allowed.join(', ')})`);
     }
   };
+  const checkDate = (sheet: SheetName, i: number, field: string, value: string) => {
+    if (!value) return;
+    if (!isValidDate(value)) err(sheet, rowNo(i), field, 'date must be YYYY-MM-DD');
+    else if (value > today) err(sheet, rowNo(i), field, `date ${value} is in the future`);
+  };
+  const checkCoords = (sheet: SheetName, row: Record<string, string>, i: number) => {
+    for (const f of ['lat', 'lng']) if (row[f] && !isNumber(row[f])) err(sheet, rowNo(i), f, `"${f}" must be a decimal number`);
+    if (isNumber(row.lat) && isNumber(row.lng)) {
+      const lat = Number(row.lat);
+      const lng = Number(row.lng);
+      if (lat < JAPAN.latMin || lat > JAPAN.latMax || lng < JAPAN.lngMin || lng > JAPAN.lngMax) {
+        err(sheet, rowNo(i), 'lat', `coordinates ${lat}, ${lng} are outside Japan (lat and lng swapped?)`);
+      }
+    }
+  };
   const uniqueIds = (sheet: SheetName) => {
     const seen = new Map<string, number>();
     tables[sheet].forEach((row, i) => {
       const id = row.id;
       if (!id) return;
+      if (!SLUG_RE.test(id)) err(sheet, rowNo(i), 'id', `id "${id}" must be lowercase letters, digits and hyphens`);
       if (seen.has(id)) err(sheet, rowNo(i), 'id', `duplicate id "${id}" (first at row ${seen.get(id)})`);
       else seen.set(id, rowNo(i));
     });
@@ -92,21 +127,21 @@ export function validate(tables: Tables, headers?: Partial<Record<SheetName, str
 
   // Stations.
   tables.stations.forEach((s, i) => {
-    required('stations', s, i, ['id', 'name_en', 'name_ja', 'lat', 'lng']);
-    for (const f of ['lat', 'lng']) if (s[f] && !isNumber(s[f])) err('stations', rowNo(i), f, `"${f}" must be a number`);
+    required('stations', s, i, ['id', 'name_en', 'name_ja', 'lat', 'lng', 'source']);
+    checkCoords('stations', s, i);
   });
 
   // Chains.
   tables.chains.forEach((c, i) => {
-    required('chains', c, i, ['id', 'name_en', 'name_ja']);
-    if (c.checked_at && !isValidDate(c.checked_at)) err('chains', rowNo(i), 'checked_at', 'date must be YYYY-MM-DD');
+    required('chains', c, i, ['id', 'name_en', 'name_ja', 'site_url', 'checked_at']);
+    checkDate('chains', i, 'checked_at', c.checked_at);
   });
 
   // Cafes.
   tables.cafes.forEach((c, i) => {
-    required('cafes', c, i, ['id', 'name_en', 'name_ja', 'lat', 'lng', 'status']);
+    required('cafes', c, i, ['id', 'name_en', 'name_ja', 'lat', 'lng', 'coord_source', 'status']);
     if (!c.address_en && !c.address_ja) err('cafes', rowNo(i), 'address_en', 'needs an address in at least one language');
-    for (const f of ['lat', 'lng']) if (c[f] && !isNumber(c[f])) err('cafes', rowNo(i), f, `"${f}" must be a number`);
+    checkCoords('cafes', c, i);
     oneOf('cafes', i, 'status', c.status, STATUS_CODES);
     oneOf('cafes', i, 'coord_source', c.coord_source, COORD_SOURCES);
     if (c.station_id && !stationIds.has(c.station_id)) {
@@ -117,6 +152,23 @@ export function validate(tables: Tables, headers?: Partial<Record<SheetName, str
       if (!c.moved_to) err('cafes', rowNo(i), 'moved_to', 'a moved cafe needs "moved_to"');
     }
     if (c.moved_to && !cafeIds.has(c.moved_to)) err('cafes', rowNo(i), 'moved_to', `cafe "${c.moved_to}" doesn't exist`);
+    if (c.moved_to && c.moved_to === c.id) err('cafes', rowNo(i), 'moved_to', "a cafe can't move to itself");
+  });
+
+  // moved_to must not loop (V-CA08, V-CA09).
+  const movedTo = new Map(tables.cafes.filter((c) => c.id && c.moved_to).map((c) => [c.id, c.moved_to]));
+  tables.cafes.forEach((c, i) => {
+    if (!c.moved_to || c.moved_to === c.id) return;
+    const seen = new Set([c.id]);
+    let next: string | undefined = c.moved_to;
+    while (next && movedTo.has(next)) {
+      if (seen.has(next)) {
+        err('cafes', rowNo(i), 'moved_to', `moved_to loops back to "${next}"`);
+        break;
+      }
+      seen.add(next);
+      next = movedTo.get(next);
+    }
   });
 
   // Methods.
@@ -136,7 +188,16 @@ export function validate(tables: Tables, headers?: Partial<Record<SheetName, str
     if (m.source_type && m.source_type !== 'visit' && !m.source_url) {
       err('methods', rowNo(i), 'source_url', '"source_url" is required unless source_type is "visit"');
     }
-    if (m.checked_at && !isValidDate(m.checked_at)) err('methods', rowNo(i), 'checked_at', 'date must be YYYY-MM-DD');
+    checkDate('methods', i, 'checked_at', m.checked_at);
+  });
+
+  // The same method twice for one cafe or chain (V-M09).
+  const seenMethods = new Map<string, number>();
+  tables.methods.forEach((m, i) => {
+    const key = `${m.cafe_id}|${m.chain_id}|${m.method}`;
+    if (!m.method) return;
+    if (seenMethods.has(key)) err('methods', rowNo(i), 'method', `"${m.method}" is listed twice for the same cafe or chain (first at row ${seenMethods.get(key)})`);
+    else seenMethods.set(key, rowNo(i));
   });
 
   // Links must be http(s) URLs, since they are rendered as hrefs.

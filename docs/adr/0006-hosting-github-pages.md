@@ -25,7 +25,7 @@
 
 1. 호스팅은 **GitHub Pages**로 하고, 배포는 **GitHub Actions 커스텀 워크플로**(`actions/upload-pages-artifact` + `actions/deploy-pages`)로 한다.
 2. 워크플로는 두 개다.
-   - `ci.yml`: `pull_request` 때 실행한다. 데이터 검증 → `astro check` → 빌드 → 빌드 후 확인을 하고 배포는 하지 않는다.
+   - `ci.yml`: `pull_request` 때 실행한다. 데이터 검증 → `astro check` → 빌드 → 빌드 후 확인을 하고 배포는 하지 않는다. (뼈대 단계의 `ci.yml`은 검증 → 빌드 → 테스트까지만 한다. `astro check`와 빌드 후 확인은 다음 계획에서 넣는다.)
    - `deploy.yml`: `main`에 push할 때와 `workflow_dispatch`(수동) 때 실행한다. 같은 단계 뒤에 배포한다. 검증이 실패하면 배포 단계까지 가지 않는다.
 3. 커스텀 도메인은 창업자 개인 도메인의 서브도메인 하나로 하고, DNS에 CNAME을 둔다. HTTPS 강제를 켠다.
 4. `404.html`은 Astro의 `src/pages/404.astro`로 만든다. 언어를 알 수 없으므로 두 언어로 쓴다.

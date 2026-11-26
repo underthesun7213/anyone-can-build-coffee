@@ -3,7 +3,7 @@
 
 import { describe, expect, it } from 'vitest';
 import { spawnSync } from 'node:child_process';
-import { mkdtempSync, writeFileSync } from 'node:fs';
+import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { stringify } from 'csv-stringify/sync';
@@ -108,6 +108,34 @@ describe('data validation', () => {
     }
   });
 
+  // Added while building (code review): the rest of the error rules in data-validation.md §4.1–§4.8.
+  it('fails on the other error rules: id slugs, future dates, coordinates, numbers, moves, chains, stations, duplicates', () => {
+    const today = '2026-11-27';
+    const cases: Array<[string, (t: Tables) => void]> = [
+      ['id slug', (t) => { t.cafes[0].id = 'Bad ID/x'; }],
+      ['future date', (t) => { t.methods[0].checked_at = '2099-01-01'; }],
+      ['outside Japan', (t) => { [t.cafes[0].lat, t.cafes[0].lng] = [t.cafes[0].lng, t.cafes[0].lat]; }],
+      ['decimal number', (t) => { t.stations[0].lat = '0x23'; }],
+      ['coord_source', (t) => { t.cafes[0].coord_source = ''; }],
+      ['move to itself', (t) => { t.cafes[0].status = 'moved'; t.cafes[0].moved_to = t.cafes[0].id; }],
+      ['moved_to loop', (t) => {
+        t.cafes[0].status = 'moved'; t.cafes[0].moved_to = t.cafes[1].id;
+        t.cafes[1].status = 'moved'; t.cafes[1].moved_to = t.cafes[0].id;
+      }],
+      ['chain site_url', (t) => { t.chains[0].site_url = ''; }],
+      ['chain checked_at', (t) => { t.chains[0].checked_at = ''; }],
+      ['station source', (t) => { t.stations[0].source = ''; }],
+      ['duplicate method', (t) => { t.methods.push({ ...t.methods[1] }); }],
+    ];
+    expect(validate(sample(), undefined, { today }).filter((i) => i.severity === 'error')).toEqual([]);
+    for (const [name, breakIt] of cases) {
+      const t = sample();
+      breakIt(t);
+      const errors = validate(t, undefined, { today }).filter((i) => i.severity === 'error');
+      expect(errors.length, name).toBeGreaterThan(0);
+    }
+  });
+
   it('passes on the sample data', () => {
     const { tables, headers } = readTables();
     expect(validate(tables, headers).filter((i) => i.severity === 'error')).toEqual([]);
@@ -123,6 +151,8 @@ describe('data validation', () => {
     const broken = spawnSync(process.execPath, ['scripts/validate-data.ts', dir], { encoding: 'utf8' });
     expect(broken.status).toBe(1);
     expect(broken.stdout).toContain('espreso_semi');
+
+    rmSync(dir, { recursive: true, force: true });
 
     const ok = spawnSync(process.execPath, ['scripts/validate-data.ts'], { encoding: 'utf8' });
     expect(ok.status).toBe(0);

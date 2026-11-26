@@ -3,7 +3,7 @@
 - 상태: 제안됨 · 작성일: 2026-11-20 · 근거: [PRD v0.6](../prd/PRD-v0.6.md) §5, §6, §7, §8, §9, §10, §13
 - 관련: [ADR-0002](../adr/0002-four-sheet-data-model-and-csv-build.md) (시트 4개·CSV 빌드), [ADR-0003](../adr/0003-coordinates-from-osm-not-google.md) (좌표), [tech-stack.md](tech-stack.md) §5
 
-**현행:** 검증 스크립트도 데이터 파일도 아직 없다. 이 문서는 앞으로 만들 `scripts/validate-data`가 지킬 **명세**다.
+**현행 (2026-11-27):** `scripts/validate-data.ts`가 §4.1–§4.8의 **오류(E) 규칙**을 구현했다([계획 01](../plans/01-skeleton.md)). 경고(W) 규칙, §4.9 빌드 후 확인, `astro check`는 아직 없다. 이 문서는 그 나머지까지 포함한 **명세**다.
 
 ## 1. 목적
 

@@ -61,7 +61,10 @@ Basis: [PRD v0.6](../prd/PRD-v0.6.md) §7, §9, §10, §11 · [ADR-0001](../adr/
 - When validation fails on `main`, nothing should be deployed and the live site should stay as it was. (checked by hand)
 - When an address that doesn't exist is opened, it should show a 404 in both languages with a link to the list.
 
-- Test count before: 0 . Test count when done: 13 (the 14 lines above, minus the 1 checked by hand). If building shows a test is needed that isn't listed, add it, name it here, and update this number. Never drop a listed test to keep the count.
+**Added while building**
+- When a link field (`cafe_url`, `social_url`, `site_url`, `source_url`, `source_url_2`) is not an http(s) URL, validation should fail (`fails when a link is not an http(s) URL`). Added after an automated security review: links are rendered as `href`, so a `javascript:` value would run in the page.
+
+- Test count before: 0 . Test count when done: 14 (the 14 planned lines minus the 1 checked by hand, plus the 1 added while building). If building shows a test is needed that isn't listed, add it, name it here, and update this number. Never drop a listed test to keep the count.
 
 ## 4. Not in this plan
 

@@ -31,6 +31,22 @@ function isNumber(value: string): boolean {
   return value !== '' && Number.isFinite(Number(value));
 }
 
+/** Only http(s) links may reach an href (blocks javascript:, data: and the like). */
+export function isWebUrl(value: string): boolean {
+  try {
+    const u = new URL(value);
+    return u.protocol === 'https:' || u.protocol === 'http:';
+  } catch {
+    return false;
+  }
+}
+
+const URL_FIELDS: Partial<Record<SheetName, readonly string[]>> = {
+  cafes: ['cafe_url', 'social_url'],
+  chains: ['site_url'],
+  methods: ['source_url', 'source_url_2'],
+};
+
 export function validate(tables: Tables, headers?: Partial<Record<SheetName, string[]>>): Issue[] {
   const issues: Issue[] = [];
   const err = (sheet: SheetName, row: number, field: string | undefined, message: string) =>
@@ -122,6 +138,16 @@ export function validate(tables: Tables, headers?: Partial<Record<SheetName, str
     }
     if (m.checked_at && !isValidDate(m.checked_at)) err('methods', rowNo(i), 'checked_at', 'date must be YYYY-MM-DD');
   });
+
+  // Links must be http(s) URLs, since they are rendered as hrefs.
+  for (const sheet of SHEETS) {
+    for (const field of URL_FIELDS[sheet] ?? []) {
+      tables[sheet].forEach((row, i) => {
+        const value = row[field];
+        if (value && !isWebUrl(value)) err(sheet, rowNo(i), field, `"${field}" must be an http(s) URL`);
+      });
+    }
+  }
 
   // Espresso status (data-validation.md §4.6): every active independent cafe and
   // every chain has one; "none" can't sit with "semi"/"auto"; both machines is fine.

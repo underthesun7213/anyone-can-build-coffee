@@ -95,6 +95,19 @@ describe('data validation', () => {
     }
   });
 
+  // Added while building (security review): links are rendered as hrefs.
+  it('fails when a link is not an http(s) URL', () => {
+    for (const breakIt of [
+      (t: Tables) => { t.cafes[0].cafe_url = 'javascript:alert(1)'; },
+      (t: Tables) => { t.chains[0].site_url = 'data:text/html,hi'; },
+      (t: Tables) => { t.methods[0].source_url = 'not a url'; },
+    ]) {
+      const t = sample();
+      breakIt(t);
+      expect(errorsOf(t).some((e) => e.message.includes('must be an http(s) URL'))).toBe(true);
+    }
+  });
+
   it('passes on the sample data', () => {
     const { tables, headers } = readTables();
     expect(validate(tables, headers).filter((i) => i.severity === 'error')).toEqual([]);

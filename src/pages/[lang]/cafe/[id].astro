@@ -4,6 +4,7 @@ import MethodList from '../../../components/MethodList.astro';
 import { LANGS, type Lang } from '../../../lib/codes.ts';
 import { espressoMethods, loadSiteData, otherMethods } from '../../../lib/load-data.ts';
 import { withBase } from '../../../lib/lang.ts';
+import { isWebUrl } from '../../../lib/validate.ts';
 import { t } from '../../../i18n/strings.ts';
 
 export function getStaticPaths() {
@@ -49,7 +50,7 @@ const otherList = otherMethods(cafe);
   </dl>
 
   <p>
-    {cafe.cafeUrl && <a href={cafe.cafeUrl}>{t(lang, 'website')}</a>}
+    {cafe.cafeUrl && isWebUrl(cafe.cafeUrl) && <a href={cafe.cafeUrl}>{t(lang, 'website')}</a>}
     {' '}
     <a href={directions}>{t(lang, 'directions')}</a>
   </p>

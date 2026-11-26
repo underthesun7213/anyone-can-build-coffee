@@ -1,6 +1,6 @@
 # 체인 카페 가이드 조사
 
-Status: 할 일 (M0 시작, M1에 완성) · 기록일: 2026-11-20 · 관련: [PRD v0.5 §8 F9](../prd/PRD-v0.5.md)
+Status: 1차 조사 완료 (초안, 2026-11-27) · 기록일: 2026-11-20 · 관련: [PRD v0.6 §8 F9](../prd/PRD-v0.6.md) · 상세: [chains-data-a.md](chains-data-a.md), [chains-data-b.md](chains-data-b.md)
 
 ## 왜 하나
 
@@ -50,6 +50,33 @@ PRD v0.5 §9 `chains` 시트와 `methods` 시트에 맞춘다.
 3. 출시 지역 매장 직접 방문
 4. 기사나 블로그(가장 낮은 우선순위, 링크만)
 
-## 결과
+## 결과 (1차, 2026-11-27)
 
-(조사 후 기록)
+조사 에이전트 두 개가 웹 검색으로 모은 결과다. 근거 링크와 확신 정도의 이유는 상세 파일에 있다. 매장 위치는 대부분 음식점 사이트·기사 기준이고, 공식 매장 검색으로 다시 확인해야 한다.
+
+| 체인 | 일본어 | 일본 매장 수 (기준 시점) | 출시 지역 매장 | 에스프레소 상태 | 확신 | 상세 |
+|---|---|---|---|---|---|---|
+| Starbucks | スターバックス | 2,116 (2025-03말) | 있음 | `espresso_auto` (Reserve 매장은 반자동 보도) | 높음 | [A §1](chains-data-a.md) |
+| Doutor Coffee Shop | ドトールコーヒーショップ | 1,077 (2026-10말) | 있음 (原宿店 등) | `espresso_auto` | 보통 | [A §2](chains-data-a.md) |
+| Excelsior Caffé | エクセルシオール カフェ | 131 (2026-10말) | 있음 | `espresso_semi` | 보통 | [A §3](chains-data-a.md) |
+| Tully's Coffee | タリーズコーヒー | 약 850 (2026-10) | 있음 | `espresso_semi` | 높음 | [A §4](chains-data-a.md) |
+| Komeda's Coffee | コメダ珈琲店 | 1,158 그룹 전체 (2026-06말) | 있음 | `espresso_none` (공장 추출) | 보통 | [A §5](chains-data-a.md) |
+| Caffè Veloce | カフェ・ベローチェ | 174 (2026-05말) | 있음 | `espresso_semi` (추정) | 낮음 | [A §6](chains-data-a.md) |
+| Pronto | プロント | 284 (2026-02말) | 있음 | `espresso_auto` (추정) | 낮음 | [A §7](chains-data-a.md) |
+| Saint Marc Café | サンマルクカフェ | 약 290 (2026-05) | 있음 | `espresso_auto` (출처 엇갈림) | 보통 | [B](chains-data-b.md) |
+| Café de Crié | カフェ・ド・クリエ | 172 (2026-07말) | 아마 있음 | `espresso_auto` (추정) | 낮음 | [B](chains-data-b.md) |
+| Hoshino Coffee | 星乃珈琲店 | 277 (2024-02말) | 있음 | `espresso_none` (핸드드립) | 보통 | [B](chains-data-b.md) |
+| Ueshima Coffee Shop | 上島珈琲店 | 91 (2026-09 기사) | 아마 있음 | `espresso_none` (넬드립) | 높음 | [B](chains-data-b.md) |
+| Kissa Renoir | 喫茶室ルノアール | 약 103 회사 전체 (2026-06말) | 있음 | `espresso_none` | 보통 | [B](chains-data-b.md) |
+| Blue Bottle Coffee | ブルーボトルコーヒー | 33 (2026-11) | 있음 | `espresso_semi` | 높음 | [B](chains-data-b.md) |
+| % Arabica | % ARABICA | 7 | **없음** | `espresso_semi` | 높음 | [B](chains-data-b.md) |
+
+### 정리할 것
+
+- **Doutor 상태가 PRD 예시와 다르다.** PRD v0.6 §5의 예시는 "Doutor는 필터"인데, 이번 조사는 `espresso_auto`(보통)다. 공식 자료는 "도토루 사양 머신"이라고만 쓴다. 매장에서 확인한 뒤 PRD 예시나 이 표 중 하나를 고친다.
+- **Excelsior:** 체인 B의 추가 후보 목록은 전자동으로 추정했지만, 체인 A의 상세 조사(공식 채용 페이지의 추출·스티밍 교육)는 반자동이다. 상세 조사를 따른다.
+- **르누아르는 둘로 나눌지 정한다.** 喫茶室ルノアール는 에스프레소가 없고, 자매 브랜드 Cafe Renoir는 에스프레소·라떼가 있다.
+- **% Arabica는 출시 지역에 매장이 없다.** v1 범위(출시 지역에 매장이 있는 체인)에서 빠진다.
+- **추가 후보:** Sarutahiko Coffee, Streamer Coffee Company (둘 다 반자동 추정, 매장 수와 출시 지역 매장 확인 필요).
+- **매장별 예외:** Starbucks Reserve, Pronto 일부 매장처럼 체인 표준과 다른 매장이 보도됐다. PRD v0.6 §4는 매장별 예외를 다루지 않으므로 체인 단위로만 기록한다.
+- 확신이 낮은 Veloce, Pronto, Crié는 매장에서 한 번 확인하는 것이 가장 빠르다.

@@ -7,7 +7,7 @@ A hobby project planning a bilingual (EN/JA) list of cafes in Japan that make es
 ## 현재 상태
 
 - **기획 단계.** 최신 문서는 [PRD v0.6](docs/prd/PRD-v0.6.md)예요.
-- 다음 단계는 **M0 조사**(4주)예요. 인터뷰 3명, 카페 30곳 불확실성 테스트, 공유 리스트 반응을 봐요. 진행 기준을 통과해야 개발(M1)을 시작해요.
+- **M0 조사와 M1 개발을 동시에 진행해요.** M0는 인터뷰 3명, 카페 30곳 에스프레소 불확실성 테스트, 공유 리스트 반응을 봐요. 진행 기준을 통과해야 공개 출시(M2)를 해요.
 
 ## 문서
 
@@ -22,8 +22,10 @@ A hobby project planning a bilingual (EN/JA) list of cafes in Japan that make es
 
 ## 조사
 
+- [일본 카페 문화의 역사](docs/research/japan-cafe-history.md)
+- [일본 커피 시장과 카페 현황](docs/research/japan-coffee-market.md)
+- [체인 카페 가이드 조사](docs/research/chains.md) (상세: [A](docs/research/chains-data-a.md) · [B](docs/research/chains-data-b.md))
 - [Google Ask Maps 경쟁 확인](docs/research/google-ask-maps.md)
-- [체인 카페 가이드 조사](docs/research/chains.md)
 
 ## 기획 방식
 

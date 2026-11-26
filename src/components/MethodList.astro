@@ -1,0 +1,15 @@
+---
+import { METHOD_LABELS, type Lang } from '../lib/codes.ts';
+import type { Method } from '../lib/load-data.ts';
+
+interface Props {
+  lang: Lang;
+  methods: Method[];
+  kind: 'espresso' | 'other';
+}
+
+const { lang, methods, kind } = Astro.props;
+---
+<ul class={`methods methods-${kind}`} data-kind={kind}>
+  {methods.map((m) => <li data-method={m.code}>{METHOD_LABELS[m.code][lang]}</li>)}
+</ul>

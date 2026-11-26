@@ -1,0 +1,4 @@
+id,name_en,name_ja,lat,lng,source
+shibuya,Shibuya,渋谷,35.6580,139.7016,SAMPLE: approximate coordinates
+omotesando,Omotesando,表参道,35.6652,139.7123,SAMPLE: approximate coordinates
+meiji-jingumae,Meiji-jingumae (Harajuku),明治神宮前〈原宿〉,35.6684,139.7056,SAMPLE: approximate coordinates

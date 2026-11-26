@@ -1,0 +1,6 @@
+id,name_en,name_ja,address_en,address_ja,lat,lng,coord_source,osm_id,station_id,status,moved_to,chain_id,cafe_url,social_url,internal_note
+sample-espresso-bar,Sample Espresso Bar,サンプル エスプレッソバー,"1-1 Jinnan, Shibuya (sample)",渋谷区神南1-1（サンプル）,35.6625,139.6990,geocoded,,,active,,,https://example.com/,,SAMPLE DATA: not a real cafe
+sample-drip-house,Sample Drip House,サンプル ドリップハウス,"2-2 Jingumae, Shibuya (sample)",渋谷区神宮前2-2（サンプル）,35.6690,139.7090,geocoded,,,active,,,https://example.com/,,SAMPLE DATA: not a real cafe
+sample-roastery,Sample Roastery,サンプル ロースタリー,"3-3 Kita-Aoyama, Minato (sample)",港区北青山3-3（サンプル）,35.6660,139.7140,geocoded,,,active,,,https://example.com/,,SAMPLE DATA: not a real cafe
+sample-tullys-shibuya,Tully's Coffee (sample store),タリーズコーヒー（サンプル店舗）,"Shibuya (sample)",渋谷（サンプル）,35.6595,139.7005,geocoded,,,active,,tullys,,,SAMPLE DATA: store location is illustrative
+sample-doutor-harajuku,Doutor Coffee Shop (sample store),ドトールコーヒーショップ（サンプル店舗）,"Jingumae, Shibuya (sample)",渋谷区神宮前（サンプル）,35.6703,139.7027,geocoded,,,active,,doutor,,,SAMPLE DATA: store location is illustrative

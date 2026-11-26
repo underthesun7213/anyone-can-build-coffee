@@ -1,0 +1,52 @@
+---
+import type { Lang } from '../lib/codes.ts';
+import { langPath, LANG_STORAGE_KEY, withBase } from '../lib/lang.ts';
+import { loadSiteData } from '../lib/load-data.ts';
+import { t } from '../i18n/strings.ts';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  /** Path after the language segment, e.g. "" for the list or "cafe/x/" for a cafe. */
+  rest: string;
+}
+
+const { lang, title, rest } = Astro.props;
+const base = import.meta.env.BASE_URL;
+const other: Lang = lang === 'en' ? 'ja' : 'en';
+const { lastUpdated } = loadSiteData();
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title} · {t(lang, 'siteName')}</title>
+    <link rel="alternate" hreflang={other} href={langPath(base, other, rest)} />
+    <style is:global>
+      :root { color-scheme: light dark; font-family: system-ui, sans-serif; line-height: 1.5; }
+      body { margin: 0 auto; max-width: 44rem; padding: 0 1rem 2rem; }
+      header, footer { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 0.75rem 0; }
+      footer { font-size: 0.85rem; opacity: 0.8; border-top: 1px solid currentColor; margin-top: 2rem; }
+      a { color: inherit; }
+      .notice { font-size: 0.85rem; padding: 0.25rem 0.5rem; border: 1px dashed currentColor; }
+    </style>
+  </head>
+  <body data-lang={lang}>
+    <header>
+      <a href={withBase(base, `${lang}/`)}><strong>{t(lang, 'siteName')}</strong></a>
+      <a href={langPath(base, other, rest)} hreflang={other} lang={other} data-lang-switch={other}>{t(lang, 'switchTo')}</a>
+    </header>
+    <p class="notice">{t(lang, 'sampleNotice')}</p>
+    <main>
+      <slot />
+    </main>
+    <footer>
+      <span>{t(lang, 'dataUpdated', { date: lastUpdated })}</span>
+    </footer>
+    <script is:inline define:vars={{ key: LANG_STORAGE_KEY, lang }}>
+      // Remember the language last used, for the root redirect (PRD v0.6 §10).
+      try { localStorage.setItem(key, lang); } catch {}
+    </script>
+  </body>
+</html>

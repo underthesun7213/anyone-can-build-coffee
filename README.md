@@ -6,8 +6,23 @@ A hobby project planning a bilingual (EN/JA) list of cafes in Japan that make es
 
 ## 현재 상태
 
-- **기획 단계.** 최신 문서는 [PRD v0.6](docs/prd/PRD-v0.6.md)예요.
+- **M1 개발 시작.** 최신 기획 문서는 [PRD v0.6](docs/prd/PRD-v0.6.md), 첫 구현 계획은 [사이트 뼈대](docs/plans/01-skeleton.md)예요. 지금 사이트는 **샘플 데이터**로 돌아가요.
 - **M0 조사와 M1 개발을 동시에 진행해요.** M0는 인터뷰 3명, 카페 30곳 에스프레소 불확실성 테스트, 공유 리스트 반응을 봐요. 진행 기준을 통과해야 공개 출시(M2)를 해요.
+- 사이트 주소(배포 후): https://underthesun7213.github.io/anyone-can-build-coffee/
+
+## 로컬에서 실행
+
+Node 24 이상이 필요해요.
+
+```bash
+npm install
+npm run validate   # data/의 CSV 4개 검사
+npm run dev        # 개발 서버
+npm run check      # 검사 → 빌드 → 테스트 (PR 검사와 같아요)
+```
+
+- 데이터: `data/`의 `cafes.csv`, `chains.csv`, `methods.csv`, `stations.csv` ([PRD §9](docs/prd/PRD-v0.6.md), [검증 규칙](docs/architecture/data-validation.md)). 데이터만 고쳐도 PR을 거쳐요.
+- PR마다 `ci` 검사가 돌고, `main`에 병합하면 GitHub Pages에 배포돼요. 검사가 실패하면 배포하지 않아요.
 
 ## 문서
 

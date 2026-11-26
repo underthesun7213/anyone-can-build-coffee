@@ -57,7 +57,7 @@ PRD v0.5 §9 `chains` 시트와 `methods` 시트에 맞춘다.
 | 체인 | 일본어 | 일본 매장 수 (기준 시점) | 출시 지역 매장 | 에스프레소 상태 | 확신 | 상세 |
 |---|---|---|---|---|---|---|
 | Starbucks | スターバックス | 2,116 (2025-03말) | 있음 | `espresso_auto` (Reserve 매장은 반자동 보도) | 높음 | [A §1](chains-data-a.md) |
-| Doutor Coffee Shop | ドトールコーヒーショップ | 1,077 (2026-10말) | 있음 (原宿店 등) | `espresso_auto` | 보통 | [A §2](chains-data-a.md) |
+| Doutor Coffee Shop | ドトールコーヒーショップ | 1,077 (2026-10말) | 있음 (原宿店 등) | `espresso_auto` + `batch_brew` (일부 매장은 에스프레소 대신 진한 드립, 공식) | 보통 | [A §2](chains-data-a.md) |
 | Excelsior Caffé | エクセルシオール カフェ | 131 (2026-10말) | 있음 | `espresso_semi` | 보통 | [A §3](chains-data-a.md) |
 | Tully's Coffee | タリーズコーヒー | 약 850 (2026-10) | 있음 | `espresso_semi` | 높음 | [A §4](chains-data-a.md) |
 | Komeda's Coffee | コメダ珈琲店 | 1,158 그룹 전체 (2026-06말) | 있음 | `espresso_none` (공장 추출) | 보통 | [A §5](chains-data-a.md) |
@@ -73,7 +73,7 @@ PRD v0.5 §9 `chains` 시트와 `methods` 시트에 맞춘다.
 
 ### 정리할 것
 
-- **Doutor 상태가 PRD 예시와 다르다.** PRD v0.6 §5의 예시는 "Doutor는 필터"인데, 이번 조사는 `espresso_auto`(보통)다. 공식 자료는 "도토루 사양 머신"이라고만 쓴다. 매장에서 확인한 뒤 PRD 예시나 이 표 중 하나를 고친다.
+- **Doutor (정리됨, 2026-11-27):** 대표 블렌드는 머신 드립이고, 에스프레소 음료(라떼·모카 등)는 있지만 공식 주석상 일부 매장은 에스프레소 대신 진한 드립이나 카페오레를 낸다. "필터"(창업자)와 `espresso_auto`(조사)가 둘 다 일부 맞았다. 체인 단위로 `espresso_auto` + `batch_brew`로 두고, PRD v0.6 §5 예시도 이렇게 고쳤다. 머신이 전자동인지는 여전히 2차 출처 기준이다.
 - **Excelsior:** 체인 B의 추가 후보 목록은 전자동으로 추정했지만, 체인 A의 상세 조사(공식 채용 페이지의 추출·스티밍 교육)는 반자동이다. 상세 조사를 따른다.
 - **르누아르는 둘로 나눌지 정한다.** 喫茶室ルノアール는 에스프레소가 없고, 자매 브랜드 Cafe Renoir는 에스프레소·라떼가 있다.
 - **% Arabica는 출시 지역에 매장이 없다.** v1 범위(출시 지역에 매장이 있는 체인)에서 빠진다.

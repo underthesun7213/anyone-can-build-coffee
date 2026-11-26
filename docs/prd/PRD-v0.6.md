@@ -54,7 +54,7 @@ A cafe can have several methods. Each method has a code, used in the data, filte
 | Pre-made | `premade` | Pre-made or packaged | 作り置き / パック |
 
 - **Priority:** the Espresso group is primary. Every listed cafe must have its espresso status recorded: `espresso_semi`, `espresso_auto` or `espresso_none`. For a chain store, the chain's status is its status (F9). The other groups are secondary: recorded when found, never required.
-- **What is recorded:** only the type (semi-automatic, fully automatic, or none). Brands and models are not recorded. Examples from the founder's research: Tully's Coffee is semi-automatic espresso; Doutor is filter coffee.
+- **What is recorded:** only the type (semi-automatic, fully automatic, or none). Brands and models are not recorded. Examples: Tully's Coffee is semi-automatic espresso. Doutor's main blend is machine drip; it also sells espresso drinks (likely on fully automatic machines), but its own menu notes that some stores use strong drip coffee instead of espresso. So Doutor is recorded at chain level as `espresso_auto` + `batch_brew` ([research/chains-data-a.md](../research/chains-data-a.md) §2).
 - **Curation order:** cafes that make espresso on a machine are researched and added first.
 - `premade` is recorded **only when known**. It appears on the detail page and has no filter.
 - Batch brew hold time is not tracked.
@@ -64,7 +64,7 @@ A cafe can have several methods. Each method has a code, used in the data, filte
 
 Every method row has one **source type, link and checked date**, plus an optional second link. The link is required for every source type except `visit`. There are no grades.
 
-Any of these sources is enough for the espresso status, including an article or post found by an ordinary web search (`third_party`). That is how the founder learned the Tully's and Doutor examples in §5.
+Any of these sources is enough for the espresso status, including an article or post found by an ordinary web search (`third_party`). That is how the founder first learned the Tully's and Doutor examples in §5; Doutor's was later refined from its official menu pages.
 
 | Code | Source | EN label | JA label |
 |---|---|---|---|

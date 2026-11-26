@@ -15,7 +15,7 @@ Status: 조사 완료 (초안) · 확인일: 2026-11-27
 | chain | JA name | stores in Japan | in launch area? | espresso status | confidence | main source |
 |---|---|---|---|---|---|---|
 | Starbucks | スターバックス コーヒー | 2,116 (2025-03말, 라이선스 점포 포함) | 있음 (예: 東急プラザ表参道オモカド店) | `espresso_auto` (Reserve 일부 점포는 예외) | high | [공식 PR 2014 (Mastrena)](https://kyodonewsprwire.jp/release/201409173739) |
-| Doutor Coffee Shop | ドトールコーヒーショップ | 1,077 (2026-10말) | 있음 (예: 原宿店) | `espresso_auto` | medium | [공식 taste/steam](https://www.doutor.co.jp/dcs/taste/steam.html) + 2차 출처 |
+| Doutor Coffee Shop | ドトールコーヒーショップ | 1,077 (2026-10말) | 있음 (예: 原宿店) | `espresso_auto` + `batch_brew` (일부 매장은 에스프레소 대신 진한 드립, 공식) | medium | [공식 taste/steam](https://www.doutor.co.jp/dcs/taste/steam.html), [공식 カフェ・モカ](https://www.doutor.co.jp/app/dcs/menu/detail/2118.html) + 2차 출처 |
 | Excelsior Caffé | エクセルシオール カフェ | 131 (2026-10말) | 있음 (예: 渋谷 神南1-20-12) | `espresso_semi` | medium | [공식 채용 LP](https://upro.work/exc/lp), [공식 taste](https://www.doutor.co.jp/exc/taste/) |
 | Tully's Coffee | タリーズコーヒー | 약 850 (2026-10 보도자료) | 있음 (예: 渋谷ファイヤー通り店) | `espresso_semi` | high | [공식 エスプレッソへのこだわり](https://www.tullys.co.jp/quality/brand/espresso/) |
 | Komeda's Coffee | コメダ珈琲店 | 그룹 1,158 (2026-06말, 해외·타 브랜드 포함) | 있음 (예: 渋谷宮益坂上店) | `espresso_none` | medium | 메뉴 2차 출처, [코메다 블로그](https://komeda-sankaku.com/announcements/nmu0pvkb8ijv0tqd) |
@@ -66,6 +66,13 @@ Status: 조사 완료 (초안) · 확인일: 2026-11-27
     - 아르바이트 기사에 카페라테 계열은 머신이 "自動で作ってくれたり" 해서 쉽다는 서술이 있다 ([baitozine](https://baitozine.com/knowhow/7133/)).
     - 카페 개업 블로그는 スタバ·ドトール·コメダ 등 대형 체인 다수가 전자동을 쓴다고 했다 ([cafe note 2025-11-24](https://note.com/cafenotes/n/ncc72e05d831d)).
   - 판단: 공식 자료가 기종을 말하지 않는다. 2차 출처는 일관되게 자동을 가리키므로 medium.
+  - **추가 확인 (2026-11-27): 일부 매장에는 에스프레소가 없다(공식).**
+    - 메뉴에는 에스프레소 음료가 있다. 공식 메뉴에 カフェ・ラテ, アイスカフェ・ラテ, カフェ・モカ가 있고, 2014년 공식 가격표에는 エスプレッソ, アメリカン, カプチーノ도 있다 ([カフェ・ラテ](https://www.doutor.co.jp/dcs/menu/detail/20110907154342.html), [2014 가격표 PDF](https://www.doutor.co.jp/about_us/ir/report/monthly/pdf/20140301230942.pdf)).
+    - カフェ・モカ와 アイスカフェ・モカ 공식 페이지에 "일부 매장은 에스프레소가 아니라 농도가 높은 커피를 사용한다"는 주석이 있다 ([カフェ・モカ](https://www.doutor.co.jp/app/dcs/menu/detail/2118.html), [アイスカフェ・モカ](https://www.doutor.co.jp/dcs/menu/detail/2078.html)).
+    - 같은 주석이 2024년 소금캐러멜 라떼, 2025년 벚꽃 라떼 보도자료에도 있다 ([2024](https://www.doutor.co.jp/news/newsrelease/detail/20240919092821.html), [2025](https://www.doutor.co.jp/news/newsrelease/detail/20250205160921.html)).
+    - カフェ・ラテ·アイスカフェ・ラテ 공식 페이지에는 "일부 매장은 카페오레(드립 커피 + 우유)를 판매한다"는 주석이 있다 ([アイスカフェ・ラテ](https://www.doutor.co.jp/dcs/menu/detail/20110912122326.html)).
+    - 해석: 에스프레소 머신이 없는 매장이 있다. 체인 대표 커피는 머신 드립이고, 에스프레소는 매장에 따라 있다. PRD v0.6 §4는 매장별 예외를 다루지 않으므로 체인 단위로는 `espresso_auto`(보통) + `batch_brew`로 기록하고, 체인 페이지 메모에 "일부 매장은 에스프레소 대신 진한 드립"을 적는다.
+  - **아이스커피:** 매장 밀로 주문 직전에 갈아 저온 추출한 뒤 냉각한다(공식). 에스프레소에 물을 붓는 아메리카노 방식이 아니다 ([アイスコーヒーのこだわり](https://www.doutor.co.jp/dcs/taste/icedcoffee.html)).
 - **기타 추출 방식:** 블렌드는 머신 드립이고, 蒸らし 공정까지 자동화했다 ([steam.html](https://www.doutor.co.jp/dcs/taste/steam.html)). 추출한 커피를 잠시 담아 두는 保温タンク가 있다 ([water.html](https://www.doutor.co.jp/dcs/taste/water.html)).
 - **알려진 점:** 저가 셀프서비스 블렌드 커피 중심의 일본 최대 토종 커피숍 체인이다. 원두는 자사 직화 배전이다.
 

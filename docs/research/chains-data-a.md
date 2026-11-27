@@ -15,7 +15,7 @@ Status: 조사 완료 (초안) · 확인일: 2026-11-27
 | chain | JA name | stores in Japan | in launch area? | espresso status | confidence | main source |
 |---|---|---|---|---|---|---|
 | Starbucks | スターバックス コーヒー | 2,116 (2025-03말, 라이선스 점포 포함) | 있음 (예: 東急プラザ表参道オモカド店) | `espresso_auto` (Reserve 일부 점포는 예외) | high | [공식 PR 2014 (Mastrena)](https://kyodonewsprwire.jp/release/201409173739) |
-| Doutor Coffee Shop | ドトールコーヒーショップ | 1,077 (2026-10말) | 있음 (예: 原宿店) | `espresso_auto` + `batch_brew` (일부 매장은 에스프레소 대신 진한 드립, 공식) | medium | [공식 taste/steam](https://www.doutor.co.jp/dcs/taste/steam.html), [공식 カフェ・モカ](https://www.doutor.co.jp/app/dcs/menu/detail/2118.html) + 2차 출처 |
+| Doutor Coffee Shop | ドトールコーヒーショップ | 1,077 (2026-10말) | 있음 (예: 原宿店) | `espresso_none` + `batch_brew` (2026-11-27 창업자 결정: 에스프레소·아메리카노 없음, 일부 매장은 라떼 등) | medium | [공식 taste/steam](https://www.doutor.co.jp/dcs/taste/steam.html), [공식 カフェ・モカ](https://www.doutor.co.jp/app/dcs/menu/detail/2118.html) + 2차 출처 |
 | Excelsior Caffé | エクセルシオール カフェ | 131 (2026-10말) | 있음 (예: 渋谷 神南1-20-12) | `espresso_semi` | medium | [공식 채용 LP](https://upro.work/exc/lp), [공식 taste](https://www.doutor.co.jp/exc/taste/) |
 | Tully's Coffee | タリーズコーヒー | 약 850 (2026-10 보도자료) | 있음 (예: 渋谷ファイヤー通り店) | `espresso_semi` | high | [공식 エスプレッソへのこだわり](https://www.tullys.co.jp/quality/brand/espresso/) |
 | Komeda's Coffee | コメダ珈琲店 | 그룹 1,158 (2026-06말, 해외·타 브랜드 포함) | 있음 (예: 渋谷宮益坂上店) | `espresso_none` | medium | 메뉴 2차 출처, [코메다 블로그](https://komeda-sankaku.com/announcements/nmu0pvkb8ijv0tqd) |

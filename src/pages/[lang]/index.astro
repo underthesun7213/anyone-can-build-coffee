@@ -12,7 +12,8 @@ export function getStaticPaths() {
 
 const lang = Astro.params.lang as Lang;
 const base = import.meta.env.BASE_URL;
-const { cafes, stations } = loadSiteData();
+const { cafes, chains, stations } = loadSiteData();
+const chainById = new Map(chains.map((c) => [c.id, c]));
 const stationById = new Map(stations.map((s) => [s.id, s]));
 // Closed and moved cafes are handled in a later plan; the list shows active ones.
 const listed = cafes
@@ -32,6 +33,7 @@ const listed = cafes
           href={withBase(base, `${lang}/cafe/${cafe.id}/`)}
           stationName={stationById.get(cafe.stationId)?.name[lang] ?? ''}
           stationLabel={t(lang, 'station')}
+          chainNote={cafe.chainId ? chainById.get(cafe.chainId)?.note[lang] : undefined}
         />
       </li>
     ))}

@@ -10,14 +10,17 @@ interface Props {
   href: string;
   stationName: string;
   stationLabel: string;
+  /** For a chain store: the chain's one-line note (e.g. "main coffee is drip; lattes at some stores"). */
+  chainNote?: string;
 }
 
-const { lang, cafe, href, stationName, stationLabel } = Astro.props;
+const { lang, cafe, href, stationName, stationLabel, chainNote } = Astro.props;
 ---
 <a class="cafe-card" data-cafe-id={cafe.id} href={href}>
   <span class="cafe-name">{cafe.name[lang]}</span>
   <MethodList lang={lang} methods={espressoMethods(cafe)} kind="espresso" />
   <MethodList lang={lang} methods={otherMethods(cafe).slice(0, 2)} kind="other" />
+  {chainNote && <span class="cafe-note" data-chain-note>{chainNote}</span>}
   <span class="cafe-station">{stationLabel}: {stationName}</span>
 </a>
 
@@ -40,4 +43,5 @@ const { lang, cafe, href, stationName, stationLabel } = Astro.props;
     line-height: 1.35;
   }
   .cafe-station { color: var(--text-muted); font-size: var(--text-sm); }
+  .cafe-note { color: var(--text-muted); font-size: var(--text-sm); }
 </style>

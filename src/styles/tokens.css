@@ -1,0 +1,72 @@
+/* Design tokens (docs/plans/02-design.md §2.2, values and contrast in
+   docs/architecture/design-system.md). This is the only file with literal colours;
+   everything else uses var(--…). Light values on :root, dark values follow the
+   browser setting. */
+
+:root {
+  color-scheme: light dark;
+
+  /* Neutrals: slightly warm grey */
+  --bg: #fbfaf7;
+  --surface: #ffffff;
+  --text: #1f1d1a;
+  --text-muted: #5c5750;
+  --border: #d9d4cc;
+
+  /* One accent: links, focus, selected states */
+  --accent: #1f57b8;
+  --accent-text: #ffffff;
+
+  /* Espresso status (§2.3): semi strongest, auto medium, none neutral */
+  --status-semi-bg: #1d6b4e;
+  --status-semi-text: #ffffff;
+  --status-auto-bg: #fff4df;
+  --status-auto-text: #7a4f00;
+  --status-auto-border: #b07a1a;
+  --status-none-bg: #eeebe6;
+  --status-none-text: #46423d;
+
+  /* Type */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-ja: "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Noto Sans JP", Meiryo, sans-serif;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.5rem;
+  --leading: 1.6;
+  --leading-ja: 1.7;
+
+  /* Space */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  /* Shape */
+  --radius: 8px;
+  --radius-pill: 999px;
+  --tap: 44px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #141312;
+    --surface: #1d1b19;
+    --text: #ece9e4;
+    --text-muted: #aaa49b;
+    --border: #3a3631;
+
+    --accent: #8db3ff;
+    --accent-text: #0d1a33;
+
+    --status-semi-bg: #46c08f;
+    --status-semi-text: #0b1f16;
+    --status-auto-bg: #2a2010;
+    --status-auto-text: #f2b650;
+    --status-auto-border: #b8862e;
+    --status-none-bg: #2b2825;
+    --status-none-text: #d4cfc8;
+  }
+}

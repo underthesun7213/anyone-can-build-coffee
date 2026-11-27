@@ -24,35 +24,54 @@ const otherList = otherMethods(cafe);
 ---
 <Base lang={lang} title={cafe.name[lang]} rest={`cafe/${cafe.id}/`}>
   <h1>{cafe.name[lang]}</h1>
-  <p lang={other}>{cafe.name[other]}</p>
+  <p class="muted" lang={other}>{cafe.name[other]}</p>
 
-  <section data-section="espresso">
-    <h2>{t(lang, 'espresso')}</h2>
+  <section class="block" data-section="espresso">
+    <h2 class="sr-only">{t(lang, 'espresso')}</h2>
     <MethodList lang={lang} methods={espressoMethods(cafe)} kind="espresso" />
   </section>
 
   {otherList.length > 0 && (
-    <section data-section="other">
+    <section class="block" data-section="other">
       <h2>{t(lang, 'otherMethods')}</h2>
       <MethodList lang={lang} methods={otherList} kind="other" />
     </section>
   )}
 
   {chain && (
-    <p data-chain-id={chain.id}>{t(lang, 'chainStore')}: {chain.name[lang]}. {chain.note[lang]}</p>
+    <p class="chain-note" data-chain-id={chain.id}>{t(lang, 'chainStore')}: {chain.name[lang]}. {chain.note[lang]}</p>
   )}
 
-  <dl>
+  <dl class="facts">
     <dt>{t(lang, 'station')}</dt>
     <dd>{station?.name[lang]}</dd>
     <dt>{t(lang, 'address')}</dt>
     <dd>{cafe.address[lang] || cafe.address[other]}</dd>
   </dl>
 
-  <p>
-    {cafe.cafeUrl && isWebUrl(cafe.cafeUrl) && <a href={cafe.cafeUrl}>{t(lang, 'website')}</a>}
-    {' '}
-    <a href={directions}>{t(lang, 'directions')}</a>
+  <p class="actions">
+    {cafe.cafeUrl && isWebUrl(cafe.cafeUrl) && <a class="tap button" href={cafe.cafeUrl}>{t(lang, 'website')}</a>}
+    <a class="tap button" href={directions}>{t(lang, 'directions')}</a>
   </p>
-  <p><a href={withBase(base, `${lang}/`)}>{t(lang, 'backToList')}</a></p>
+  <p><a class="tap back" href={withBase(base, `${lang}/`)}>{t(lang, 'backToList')}</a></p>
 </Base>
+
+<style>
+  .block { margin: var(--space-4) 0; }
+  .chain-note {
+    padding: var(--space-3);
+    border-left: 3px solid var(--border);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+  }
+  .facts {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: var(--space-2) var(--space-4);
+    margin: var(--space-6) 0;
+  }
+  .facts dt { color: var(--text-muted); font-size: var(--text-sm); }
+  .facts dd { margin: 0; }
+  .actions { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+  .back { padding-left: 0; justify-content: flex-start; }
+</style>

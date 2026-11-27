@@ -1,8 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
-import MethodList from '../../components/MethodList.astro';
+import CafeCard from '../../components/CafeCard.astro';
 import { LANGS, type Lang } from '../../lib/codes.ts';
-import { espressoMethods, loadSiteData, otherMethods } from '../../lib/load-data.ts';
+import { loadSiteData } from '../../lib/load-data.ts';
 import { withBase } from '../../lib/lang.ts';
 import { t } from '../../i18n/strings.ts';
 
@@ -22,15 +22,28 @@ const listed = cafes
 <Base lang={lang} title={t(lang, 'listTitle')} rest="">
   <h1>{t(lang, 'listTitle')}</h1>
   <p>{t(lang, 'tagline')}</p>
-  <p>{t(lang, 'cafeCount', { n: listed.length })}</p>
+  <p class="muted">{t(lang, 'cafeCount', { n: listed.length })}</p>
   <ol class="cafe-list">
     {listed.map((cafe) => (
-      <li class="cafe-card" data-cafe-id={cafe.id}>
-        <h2><a href={withBase(base, `${lang}/cafe/${cafe.id}/`)}>{cafe.name[lang]}</a></h2>
-        <MethodList lang={lang} methods={espressoMethods(cafe)} kind="espresso" />
-        <MethodList lang={lang} methods={otherMethods(cafe).slice(0, 2)} kind="other" />
-        <p>{t(lang, 'station')}: {stationById.get(cafe.stationId)?.name[lang]}</p>
+      <li>
+        <CafeCard
+          lang={lang}
+          cafe={cafe}
+          href={withBase(base, `${lang}/cafe/${cafe.id}/`)}
+          stationName={stationById.get(cafe.stationId)?.name[lang] ?? ''}
+          stationLabel={t(lang, 'station')}
+        />
       </li>
     ))}
   </ol>
 </Base>
+
+<style>
+  .cafe-list {
+    display: grid;
+    gap: var(--space-3);
+    list-style: none;
+    margin: var(--space-4) 0 0;
+    padding: 0;
+  }
+</style>

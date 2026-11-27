@@ -1,0 +1,43 @@
+---
+// Cafe card (docs/plans/02-design.md §2.4). The whole card is one link, so any tap opens the cafe.
+import MethodList from './MethodList.astro';
+import type { Lang } from '../lib/codes.ts';
+import { espressoMethods, otherMethods, type Cafe } from '../lib/load-data.ts';
+
+interface Props {
+  lang: Lang;
+  cafe: Cafe;
+  href: string;
+  stationName: string;
+  stationLabel: string;
+}
+
+const { lang, cafe, href, stationName, stationLabel } = Astro.props;
+---
+<a class="cafe-card" data-cafe-id={cafe.id} href={href}>
+  <span class="cafe-name">{cafe.name[lang]}</span>
+  <MethodList lang={lang} methods={espressoMethods(cafe)} kind="espresso" />
+  <MethodList lang={lang} methods={otherMethods(cafe).slice(0, 2)} kind="other" />
+  <span class="cafe-station">{stationLabel}: {stationName}</span>
+</a>
+
+<style>
+  .cafe-card {
+    display: grid;
+    gap: var(--space-2);
+    min-height: var(--tap);
+    padding: var(--space-4);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    text-decoration: none;
+  }
+  .cafe-card:hover { border-color: var(--accent); }
+  .cafe-name {
+    font-size: var(--text-lg);
+    font-weight: 700;
+    line-height: 1.35;
+  }
+  .cafe-station { color: var(--text-muted); font-size: var(--text-sm); }
+</style>

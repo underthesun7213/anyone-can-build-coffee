@@ -1,4 +1,6 @@
 ---
+import '../styles/tokens.css';
+import '../styles/base.css';
 import type { Lang } from '../lib/codes.ts';
 import { langPath, LANG_STORAGE_KEY, withBase } from '../lib/lang.ts';
 import { loadSiteData } from '../lib/load-data.ts';
@@ -23,30 +25,65 @@ const { lastUpdated } = loadSiteData();
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title} · {t(lang, 'siteName')}</title>
     <link rel="alternate" hreflang={other} href={langPath(base, other, rest)} />
-    <style is:global>
-      :root { color-scheme: light dark; font-family: system-ui, sans-serif; line-height: 1.5; }
-      body { margin: 0 auto; max-width: 44rem; padding: 0 1rem 2rem; }
-      header, footer { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; padding: 0.75rem 0; }
-      footer { font-size: 0.85rem; opacity: 0.8; border-top: 1px solid currentColor; margin-top: 2rem; }
-      a { color: inherit; }
-      .notice { font-size: 0.85rem; padding: 0.25rem 0.5rem; border: 1px dashed currentColor; }
-    </style>
   </head>
   <body data-lang={lang}>
-    <header>
-      <a href={withBase(base, `${lang}/`)}><strong>{t(lang, 'siteName')}</strong></a>
-      <a href={langPath(base, other, rest)} hreflang={other} lang={other} data-lang-switch={other}>{t(lang, 'switchTo')}</a>
+    <header class="site-header">
+      <div class="page header-inner">
+        <a class="site-name tap" href={withBase(base, `${lang}/`)}>{t(lang, 'siteName')}</a>
+        <a class="lang-switch tap button" href={langPath(base, other, rest)} hreflang={other} lang={other} data-lang-switch={other}>{t(lang, 'switchTo')}</a>
+      </div>
     </header>
-    <p class="notice">{t(lang, 'sampleNotice')}</p>
-    <main>
-      <slot />
-    </main>
-    <footer>
-      <span>{t(lang, 'dataUpdated', { date: lastUpdated })}</span>
-    </footer>
+    <div class="page">
+      <p class="notice">{t(lang, 'sampleNotice')}</p>
+      <main>
+        <slot />
+      </main>
+      <footer class="site-footer muted">
+        {t(lang, 'dataUpdated', { date: lastUpdated })}
+      </footer>
+    </div>
     <script is:inline define:vars={{ key: LANG_STORAGE_KEY, lang }}>
       // Remember the language last used, for the root redirect (PRD v0.6 §10).
       try { localStorage.setItem(key, lang); } catch {}
     </script>
   </body>
 </html>
+
+<style>
+  .site-header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+  }
+  .header-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-top: var(--space-2);
+    padding-bottom: var(--space-2);
+  }
+  .lang-switch {
+    flex: none;
+    white-space: nowrap;
+  }
+  .site-name {
+    justify-content: flex-start;
+    padding-left: 0;
+    color: var(--text);
+    font-weight: 800;
+    text-decoration: none;
+  }
+  .notice {
+    margin: var(--space-4) 0 0;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius);
+    background: var(--status-none-bg);
+    color: var(--status-none-text);
+    font-size: var(--text-sm);
+  }
+  .site-footer {
+    margin-top: var(--space-8);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+</style>

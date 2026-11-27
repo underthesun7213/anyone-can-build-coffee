@@ -35,7 +35,9 @@ Coffee people living in or visiting Japan who want espresso-based coffee made on
 - G2. Every listed cafe says whether it makes espresso on a machine, and whether that machine is semi-automatic or fully automatic, with a source and a date. Other brewing methods are added when found.
 - G3. Every chain with a store in the launch area has a chain guide entry.
 
-**Non-goals (v1):** monetization · machine brands or models · store-by-store exceptions at chain stores · grades or "verified" labels · iced or seasonal menus · roast level · reviews, ratings, ordering · interiors, desserts · a map · station pages for search.
+**Non-goals (v1):** monetization · machine brands or models · store-by-store exceptions at chain stores · grades or "verified" labels · iced or seasonal menus · roast level · reviews, ratings, ordering · interiors, desserts · station pages for search.
+
+**Map (moved into v1, 2026-11-27):** the list page (SC-01) shows a map of the listed cafes above the list, with markers coloured by espresso status. See F10 and [ADR-0007](../adr/0007-map-leaflet-osm.md).
 
 ## 5. Brewing taxonomy
 
@@ -54,7 +56,13 @@ A cafe can have several methods. Each method has a code, used in the data, filte
 | Pre-made | `premade` | Pre-made or packaged | 作り置き / パック |
 
 - **Priority:** the Espresso group is primary. Every listed cafe must have its espresso status recorded: `espresso_semi`, `espresso_auto` or `espresso_none`. For a chain store, the chain's status is its status (F9). The other groups are secondary: recorded when found, never required.
-- **What is recorded:** only the type (semi-automatic, fully automatic, or none). Brands and models are not recorded. Examples: Tully's Coffee is semi-automatic espresso. Doutor's main blend is machine drip; it also sells espresso drinks (likely on fully automatic machines), but its own menu notes that some stores use strong drip coffee instead of espresso. So Doutor is recorded at chain level as `espresso_auto` + `batch_brew` ([research/chains-data-a.md](../research/chains-data-a.md) §2).
+- **What is recorded:** only the type (semi-automatic, fully automatic, or none). Brands and models are not recorded. 
+- **Which status (decided 2026-11-27):** what counts is whether the cafe **serves espresso or an Americano**.
+  - Serves them, made on a semi-automatic machine → `espresso_semi`. Made on a fully automatic machine → `espresso_auto`.
+  - Does not serve them → `espresso_none`. This applies even if it sells lattes or other milk drinks made with espresso. Mention those in the chain note or cafe note.
+- **Examples:**
+  - Tully's Coffee is `espresso_semi`.
+  - Doutor is `espresso_none` + `batch_brew`. Its main coffee is machine drip, and it serves no espresso or Americano. Some stores also sell lattes, which its chain note says ([research/chains-data-a.md](../research/chains-data-a.md) §2).
 - **Curation order:** cafes that make espresso on a machine are researched and added first.
 - `premade` is recorded **only when known**. It appears on the detail page and has no filter.
 - Batch brew hold time is not tracked.
@@ -82,7 +90,7 @@ Every route starts with a language prefix: `/en/` or `/ja/` (§10).
 
 | ID | Screen | Route | Contains |
 |---|---|---|---|
-| SC-01 | **Cafe list (home)** | `/{lang}/` | Sort toggle (Near me / By station), filter bar (F2), result count, list cards, select mode (F7), empty states (F8) |
+| SC-01 | **Cafe list (home)** | `/{lang}/` | Map (F10), sort toggle (Near me / By station), filter bar (F2), result count, list cards, select mode (F7), empty states (F8) |
 | SC-02 | **Station picker** | `/{lang}/stations` | Covered stations with EN/JA names and cafe counts; tapping one opens SC-01 for that station |
 | SC-03 | **Cafe detail** | `/{lang}/cafe/{id}` | F3 content, "Was it as listed?" (F6), "Suggest a correction" (F5), directions |
 | SC-04 | **Shared list** | `/{lang}/list?c={ids}` | Read-only list from a share link (F7) |
@@ -167,6 +175,16 @@ See §10.
   - Stores of that chain in the covered area, linking to SC-03
 - **Scope in v1:** chains with at least one store in the launch area. More chains Later.
 - Research plan: [research/chains.md](../research/chains.md).
+
+### F10 — Map (added 2026-11-27)
+- **Where:** above the cafe list on SC-01. On a phone it takes about 40% of the screen height; the list follows below.
+- **Library and tiles:** Leaflet with OpenStreetMap tiles. Attribution is always visible ([ADR-0007](../adr/0007-map-leaflet-osm.md)).
+- **Markers:** one per listed cafe. Each marker is coloured and shaped by espresso status, using the same tokens and icons as the badges (02-design §2.3).
+- **Tapping a marker:** opens a small popup with the cafe name, its espresso badge and a "Details" link to SC-03.
+- **Initial view:** fits all listed cafes.
+- **Not on the cafe page:** the detail page keeps the Directions button, which opens Google Maps for the route, and has no map of its own.
+- **Without JavaScript or tiles:** the list still works. The map area says the map could not load.
+- **Not yet:** the user's own location on the map (comes with F1), clustering, and offline tiles (forbidden by the OSM tile policy).
 
 ### F8 — Empty and error states
 
@@ -330,7 +348,7 @@ No deadlines. **M0 and M1 run at the same time.** M2 (public launch) starts only
 | M0 | Interviews, espresso uncertainty test, list test (4-week window), Ask Maps test, chain list, name, station source, GoatCounter check → go / stop |
 | M1 | 4 sheets with 25–30 independent cafes, the launch-area chains and their stores; SC-01–SC-06, 404, offline; F1–F6, F8, F9; both languages |
 | M2 | F7; launch posts; weekly posts |
-| M3 | 3 months after launch: check §12 and §15; decide on a map and station pages |
+| M3 | 3 months after launch: check §12 and §15; decide on station pages |
 
 ## 17. Handoff review: how each item was answered
 

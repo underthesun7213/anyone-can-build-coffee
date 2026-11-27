@@ -1,0 +1,131 @@
+/* Map on the list page (docs/plans/03-map.md). Colours from tokens only. */
+
+.map {
+  position: relative;
+  height: 40vh;
+  min-height: 220px;
+  max-height: 480px;
+  margin: var(--space-4) 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+/* Shown until the map is ready; shown again if it fails. */
+.map-fallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--space-4);
+  color: var(--text-muted);
+  font-size: var(--text-sm);
+  text-align: center;
+}
+.map[data-state='ready'] .map-fallback { display: none; }
+.map[data-state='failed'] .map-fallback { display: grid; z-index: 1000; background: var(--surface); }
+
+.map-marker-wrap { background: transparent; border: 0; }
+
+.map-marker {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid var(--surface);
+  box-shadow: 0 1px 3px var(--text-muted);
+}
+.map-marker.badge-espresso_semi { background: var(--status-semi-bg); color: var(--status-semi-text); }
+.map-marker.badge-espresso_auto {
+  background: var(--status-auto-bg);
+  color: var(--status-auto-text);
+  border-color: var(--status-auto-border);
+}
+.map-marker.badge-espresso_none { background: var(--status-none-bg); color: var(--status-none-text); }
+
+.leaflet-marker-icon:focus-visible .map-marker {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Popup uses the same badge look as the list. */
+.map-popup { display: grid; gap: var(--space-2); font-family: var(--font-sans); }
+.map-popup:lang(ja) { font-family: var(--font-ja); }
+.map-popup-name { font-size: var(--text-md); }
+.map-popup .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: fit-content;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  font-size: var(--text-sm);
+  font-weight: 700;
+}
+.map-popup .badge-espresso_semi { background: var(--status-semi-bg); color: var(--status-semi-text); }
+.map-popup .badge-espresso_auto {
+  background: var(--status-auto-bg);
+  color: var(--status-auto-text);
+  border-color: var(--status-auto-border);
+}
+.map-popup .badge-espresso_none { background: var(--status-none-bg); color: var(--status-none-text); }
+.map-popup-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.leaflet-container { font-family: var(--font-sans); }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: var(--surface); color: var(--text); }
+.leaflet-control-attribution { font-size: 0.75rem; }
+
+.map-failed { display: none; }
+.map[data-state='failed'] .map-loading { display: none; }
+.map[data-state='failed'] .map-failed { display: inline; }
+
+/* Gesture hint (research/design-references/map-gestures.md). It can't be tapped, so it never blocks scrolling. */
+.map-hint {
+  position: absolute;
+  inset: auto var(--space-3) var(--space-8);
+  z-index: 900;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.map-hint[data-visible='true'] { opacity: 1; }
+
+/* "Move map" toggle: touch screens only, uses the existing button style. */
+.map-toggle {
+  min-height: var(--tap);
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+  box-shadow: 0 1px 3px var(--text-muted);
+}
+.map-toggle[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+
+/* Leaflet's zoom buttons are 30 px on touch; make them 44 px (02-design §2.1). */
+.map .leaflet-touch .leaflet-bar a,
+.map.leaflet-touch .leaflet-bar a,
+.map .leaflet-bar a {
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+  font-size: 1.25rem;
+}

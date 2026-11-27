@@ -5,6 +5,8 @@ import { LANGS, type Lang } from '../../lib/codes.ts';
 import { loadSiteData } from '../../lib/load-data.ts';
 import { withBase } from '../../lib/lang.ts';
 import { t } from '../../i18n/strings.ts';
+import { jsonForScript, mapPoints } from '../../lib/map.ts';
+import '../../styles/map.css';
 
 export function getStaticPaths() {
   return LANGS.map((lang) => ({ params: { lang } }));
@@ -12,31 +14,62 @@ export function getStaticPaths() {
 
 const lang = Astro.params.lang as Lang;
 const base = import.meta.env.BASE_URL;
-const { cafes, stations } = loadSiteData();
+const { cafes, chains, stations } = loadSiteData();
+const chainById = new Map(chains.map((c) => [c.id, c]));
 const stationById = new Map(stations.map((s) => [s.id, s]));
 // Closed and moved cafes are handled in a later plan; the list shows active ones.
 const listed = cafes
   .filter((c) => c.status === 'active')
   .sort((a, b) => a.stationId.localeCompare(b.stationId) || a.id.localeCompare(b.id));
+const hrefOf = (cafe: { id: string }) => withBase(base, `${lang}/cafe/${cafe.id}/`);
+// Embedded as JSON in a script tag; jsonForScript escapes "<" and friends so a cafe name can't close the tag.
+const points = jsonForScript(mapPoints(listed, lang, hrefOf));
 ---
 <Base lang={lang} title={t(lang, 'listTitle')} rest="">
   <h1>{t(lang, 'listTitle')}</h1>
   <p>{t(lang, 'tagline')}</p>
   <p class="muted">{t(lang, 'cafeCount', { n: listed.length })}</p>
+  <p id="map-help" class="sr-only">{t(lang, 'mapKeyboardHelp')}</p>
+  <div
+    class="map"
+    data-map
+    data-state="loading"
+    data-lang={lang}
+    data-details={t(lang, 'details')}
+    data-hint-touch={t(lang, 'mapHintTouch')}
+    data-hint-wheel={t(lang, 'mapHintWheel')}
+    data-hint-wheel-mac={t(lang, 'mapHintWheelMac')}
+    data-toggle-label={t(lang, 'mapMoveToggle')}
+    role="region"
+    aria-label={t(lang, 'mapLabel')}
+    aria-describedby="map-help"
+  >
+    <p class="map-fallback">
+      <span class="map-loading">{t(lang, 'mapLoading')}</span>
+      <span class="map-failed">{t(lang, 'mapFailed')}</span>
+    </p>
+    <noscript><p class="map-fallback map-noscript">{t(lang, 'mapFailed')}</p></noscript>
+  </div>
+  <script type="application/json" id="map-data" set:html={points} />
   <ol class="cafe-list">
     {listed.map((cafe) => (
       <li>
         <CafeCard
           lang={lang}
           cafe={cafe}
-          href={withBase(base, `${lang}/cafe/${cafe.id}/`)}
+          href={hrefOf(cafe)}
           stationName={stationById.get(cafe.stationId)?.name[lang] ?? ''}
           stationLabel={t(lang, 'station')}
+          chainNote={cafe.chainId ? chainById.get(cafe.chainId)?.note[lang] : undefined}
         />
       </li>
     ))}
   </ol>
 </Base>
+
+<script>
+  import '../../client/map.ts';
+</script>
 
 <style>
   .cafe-list {

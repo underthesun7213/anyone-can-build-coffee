@@ -60,7 +60,15 @@ Founder's choices (2026-11-27):
 **Added while building**
 - When a cafe name contains `</script>` or similar, the embedded map data should stay inside its script tag (`cannot be broken out of by a cafe name containing </script>`). Added after an automated security review found the JSON escape did nothing.
 
-- Test count before: 22 . Test count when done: 35 (12 planned lines, each with an automated test, plus 1 added while building; the phone lines are also checked by hand in the browser pane). If building shows a test is needed that isn't listed, add it, name it here, and update this number. Never drop a listed test to keep the count.
+**Added after the founder found the map seemed not to move** (from [research/design-references/map-gestures.md](../research/design-references/map-gestures.md), founder approved 2026-11-27)
+- When someone drags with one finger on a touch screen, the page should scroll and a "use two fingers" hint should appear without blocking the scroll.
+- When the touch-only "Move map / 地図を動かす" toggle is on, one finger should move the map and the button should show `aria-pressed="true"`. A tap outside the map turns it off. Leaflet's zoom buttons are 44 px.
+- On desktop, the plain wheel should scroll the page and show a "Ctrl (⌘) + scroll" hint; with Ctrl/⌘ held, the wheel should zoom the map.
+- When the user prefers reduced motion, zoom and pan should have no animation or inertia.
+
+Decisions for these: the hint shows on every missed gesture for 1.5 s, and the toggle turns off when the user taps outside the map.
+
+- Test count before: 22 . Test count when done: 39 (12 planned lines, each with an automated test, plus 5 added while building; the phone lines are also checked by hand in the browser pane). If building shows a test is needed that isn't listed, add it, name it here, and update this number. Never drop a listed test to keep the count.
 
 ## 4. Not in this plan
 

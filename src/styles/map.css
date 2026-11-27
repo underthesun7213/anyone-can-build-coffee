@@ -87,3 +87,45 @@
 .map-failed { display: none; }
 .map[data-state='failed'] .map-loading { display: none; }
 .map[data-state='failed'] .map-failed { display: inline; }
+
+/* Gesture hint (research/design-references/map-gestures.md). It can't be tapped, so it never blocks scrolling. */
+.map-hint {
+  position: absolute;
+  inset: auto var(--space-3) var(--space-8);
+  z-index: 900;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  border: 1px solid var(--border);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.map-hint[data-visible='true'] { opacity: 1; }
+
+/* "Move map" toggle: touch screens only, uses the existing button style. */
+.map-toggle {
+  min-height: var(--tap);
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+  box-shadow: 0 1px 3px var(--text-muted);
+}
+.map-toggle[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--accent-text);
+  border-color: var(--accent);
+}
+
+/* Leaflet's zoom buttons are 30 px on touch; make them 44 px (02-design §2.1). */
+.map .leaflet-touch .leaflet-bar a,
+.map.leaflet-touch .leaflet-bar a,
+.map .leaflet-bar a {
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+  font-size: 1.25rem;
+}

@@ -104,14 +104,36 @@ export function boundsOf(points: Pick<MapPoint, 'lat' | 'lng'>[]): [[number, num
 
 /**
  * Leaflet map options. On touch screens one finger scrolls the page and two fingers
- * move or zoom the map. Markers stay keyboard-reachable (Tab, then Enter).
+ * move or zoom the map; the "Move map" toggle turns one-finger panning on
+ * (research/design-references/map-gestures.md). The plain wheel scrolls the page;
+ * Ctrl/⌘ + wheel zooms (handled in src/client/map.ts). Markers stay keyboard-reachable.
+ * With reduced motion, zoom and pan have no animation or inertia.
  */
-export function mapOptions(isTouch: boolean) {
+export function mapOptions(isTouch: boolean, reduceMotion = false) {
   return {
     dragging: !isTouch,
     touchZoom: true,
     scrollWheelZoom: false,
     keyboard: true,
     zoomSnap: 0.5,
+    zoomAnimation: !reduceMotion,
+    fadeAnimation: !reduceMotion,
+    markerZoomAnimation: !reduceMotion,
+    inertia: !reduceMotion,
   };
 }
+
+export type WheelAction = 'zoom' | 'hint';
+
+/** A wheel over the map zooms only with Ctrl/⌘ held (trackpad pinch also sends ctrlKey); otherwise the page scrolls and a hint shows. */
+export function wheelAction(e: { ctrlKey: boolean; metaKey: boolean }): WheelAction {
+  return e.ctrlKey || e.metaKey ? 'zoom' : 'hint';
+}
+
+/** One-finger touch over the map while one-finger panning is off: the page scrolls and a hint shows. */
+export function touchShowsHint(touchCount: number, draggingEnabled: boolean): boolean {
+  return touchCount === 1 && !draggingEnabled;
+}
+
+/** How long a gesture hint stays visible, in ms. */
+export const HINT_MS = 1500;

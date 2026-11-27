@@ -17,6 +17,8 @@ import {
   popupHtml,
   TILE_OPTIONS,
   TILE_URL,
+  touchShowsHint,
+  wheelAction,
 } from '../../src/lib/map.ts';
 
 const data = buildSiteData(readTables().tables);
@@ -117,5 +119,55 @@ describe('phone and accessibility', () => {
     // Leaflet markers with keyboard: true get tabindex=0 and open their popup on Enter.
     expect(client).toMatch(/L\.marker\([^)]*keyboard:\s*true/);
     expect(client).toMatch(/\.bindPopup\(/);
+  });
+});
+
+// Added after the founder found the map seemed not to move (docs/plans/03-map.md §3,
+// research/design-references/map-gestures.md).
+describe('map gestures', () => {
+  const client = readFileSync('src/client/map.ts', 'utf8');
+  const css = readFileSync('src/styles/map.css', 'utf8');
+  const strings = readFileSync('src/i18n/strings.ts', 'utf8');
+
+  it('shows a "use two fingers" hint on a one-finger drag, without blocking the scroll', () => {
+    expect(touchShowsHint(1, false)).toBe(true);
+    expect(touchShowsHint(2, false)).toBe(false);
+    expect(touchShowsHint(1, true)).toBe(false);
+    expect(client).toMatch(/addEventListener\(\s*'touchmove'[\s\S]*?passive:\s*true/);
+    expect(css).toMatch(/\.map-hint\s*\{[^}]*pointer-events:\s*none;/);
+    expect(strings).toContain('Use two fingers to move the map');
+    expect(strings).toContain('地図は2本指で動かせます');
+  });
+
+  it('has a touch-only "Move map" toggle that enables one-finger panning and reports aria-pressed', () => {
+    expect(client).toMatch(/if \(isTouch\)[\s\S]*addMoveToggle\(/);
+    expect(client).toMatch(/map\.dragging\.enable\(\)/);
+    expect(client).toMatch(/map\.dragging\.disable\(\)/);
+    expect(client).toMatch(/setAttribute\('aria-pressed', String\(on\)\)/);
+    expect(client).toMatch(/!el\.contains\(e\.target as Node\)\) set\(false\)/); // tap outside turns it off
+    expect(css).toMatch(/\.map-toggle\[aria-pressed='true'\]\s*\{[^}]*var\(--accent\)/);
+    expect(css).toMatch(/\.leaflet-bar a\s*\{[^}]*width:\s*44px;[^}]*height:\s*44px;/);
+    expect(strings).toContain("mapMoveToggle: { en: 'Move map', ja: '地図を動かす' }");
+  });
+
+  it('zooms with Ctrl/⌘ + wheel; the plain wheel scrolls the page and shows a hint', () => {
+    expect(wheelAction({ ctrlKey: true, metaKey: false })).toBe('zoom');
+    expect(wheelAction({ ctrlKey: false, metaKey: true })).toBe('zoom');
+    expect(wheelAction({ ctrlKey: false, metaKey: false })).toBe('hint');
+    expect(mapOptions(false).scrollWheelZoom).toBe(false);
+    expect(client).toMatch(/wheelAction\(e\) === 'zoom'[\s\S]*?e\.preventDefault\(\)[\s\S]*?setZoomAround/);
+    expect(strings).toContain('Hold Ctrl and scroll to zoom the map');
+    expect(strings).toContain('⌘を押しながらスクロールで拡大・縮小');
+  });
+
+  it('turns off zoom and pan animation and inertia when the user prefers reduced motion', () => {
+    expect(mapOptions(false, true)).toMatchObject({
+      zoomAnimation: false,
+      fadeAnimation: false,
+      markerZoomAnimation: false,
+      inertia: false,
+    });
+    expect(mapOptions(false, false)).toMatchObject({ zoomAnimation: true, inertia: true });
+    expect(client).toMatch(/prefers-reduced-motion: reduce/);
   });
 });

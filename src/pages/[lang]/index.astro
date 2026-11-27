@@ -29,7 +29,21 @@ const points = jsonForScript(mapPoints(listed, lang, hrefOf));
   <h1>{t(lang, 'listTitle')}</h1>
   <p>{t(lang, 'tagline')}</p>
   <p class="muted">{t(lang, 'cafeCount', { n: listed.length })}</p>
-  <div class="map" data-map data-state="loading" data-lang={lang} data-details={t(lang, 'details')} role="region" aria-label={t(lang, 'mapLabel')}>
+  <p id="map-help" class="sr-only">{t(lang, 'mapKeyboardHelp')}</p>
+  <div
+    class="map"
+    data-map
+    data-state="loading"
+    data-lang={lang}
+    data-details={t(lang, 'details')}
+    data-hint-touch={t(lang, 'mapHintTouch')}
+    data-hint-wheel={t(lang, 'mapHintWheel')}
+    data-hint-wheel-mac={t(lang, 'mapHintWheelMac')}
+    data-toggle-label={t(lang, 'mapMoveToggle')}
+    role="region"
+    aria-label={t(lang, 'mapLabel')}
+    aria-describedby="map-help"
+  >
     <p class="map-fallback">
       <span class="map-loading">{t(lang, 'mapLoading')}</span>
       <span class="map-failed">{t(lang, 'mapFailed')}</span>

@@ -8,6 +8,7 @@ import { ICON_NAME } from '../../src/lib/icons.ts';
 import {
   ATTRIBUTION,
   boundsOf,
+  jsonForScript,
   MARKER_SIZE,
   mapOptions,
   mapPoints,
@@ -62,6 +63,19 @@ describe('map markers', () => {
     expect(boundsOf([])).toBeNull();
     const client = readFileSync('src/client/map.ts', 'utf8');
     expect(client).toMatch(/map\.fitBounds\(bounds/);
+  });
+});
+
+// Added while building (security review): the map points are embedded in a script tag.
+describe('embedded map data', () => {
+  it('cannot be broken out of by a cafe name containing </script>', () => {
+    const seps = String.fromCharCode(0x2028) + String.fromCharCode(0x2029);
+    const evil = [{ ...points[0], name: '</script><script>alert(1)</script> & ' + seps }];
+    const json = jsonForScript(evil);
+    for (const ch of ['<', '>', '&', ...seps]) expect(json.includes(ch)).toBe(false);
+    expect(JSON.parse(json)).toEqual(evil);
+    const page = readFileSync('src/pages/[lang]/index.astro', 'utf8');
+    expect(page).toMatch(/const points = jsonForScript\(/);
   });
 });
 

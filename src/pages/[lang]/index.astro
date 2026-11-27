@@ -5,7 +5,7 @@ import { LANGS, type Lang } from '../../lib/codes.ts';
 import { loadSiteData } from '../../lib/load-data.ts';
 import { withBase } from '../../lib/lang.ts';
 import { t } from '../../i18n/strings.ts';
-import { mapPoints } from '../../lib/map.ts';
+import { jsonForScript, mapPoints } from '../../lib/map.ts';
 import '../../styles/map.css';
 
 export function getStaticPaths() {
@@ -22,8 +22,8 @@ const listed = cafes
   .filter((c) => c.status === 'active')
   .sort((a, b) => a.stationId.localeCompare(b.stationId) || a.id.localeCompare(b.id));
 const hrefOf = (cafe: { id: string }) => withBase(base, `${lang}/cafe/${cafe.id}/`);
-// Embedded as JSON; escape "<" so a cafe name can't close the script tag.
-const points = JSON.stringify(mapPoints(listed, lang, hrefOf)).replace(/</g, '\u003c');
+// Embedded as JSON in a script tag; jsonForScript escapes "<" and friends so a cafe name can't close the tag.
+const points = jsonForScript(mapPoints(listed, lang, hrefOf));
 ---
 <Base lang={lang} title={t(lang, 'listTitle')} rest="">
   <h1>{t(lang, 'listTitle')}</h1>

@@ -50,6 +50,21 @@ export function mapPoints(cafes: Cafe[], lang: Lang, hrefOf: (cafe: Cafe) => str
   }));
 }
 
+/**
+ * JSON safe to put inside <script type="application/json">: "<", ">", "&" and the
+ * U+2028/U+2029 line separators become \uXXXX escapes, so a value like "</script>"
+ * can't end the tag. JSON.parse turns them back into the same characters.
+ */
+const BACKSLASH = String.fromCharCode(92);
+const UNSAFE_IN_SCRIPT = new RegExp(`[<>&${String.fromCharCode(0x2028)}${String.fromCharCode(0x2029)}]`, 'g');
+
+export function jsonForScript(value: unknown): string {
+  return JSON.stringify(value).replace(
+    UNSAFE_IN_SCRIPT,
+    (c) => `${BACKSLASH}u${c.charCodeAt(0).toString(16).padStart(4, '0')}`,
+  );
+}
+
 export function escapeHtml(text: string): string {
   return text
     .replace(/&/g, '&amp;')

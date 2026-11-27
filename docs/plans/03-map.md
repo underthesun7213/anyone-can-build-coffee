@@ -57,7 +57,10 @@ Founder's choices (2026-11-27):
 - When a marker is tapped, its tap target should be at least 44 × 44 px.
 - When someone uses the keyboard, they should be able to Tab to a marker and open its popup with Enter.
 
-- Test count before: 22 . Test count when done: 34 (12 lines above, each with an automated test; the phone lines are also checked by hand in the browser pane). If building shows a test is needed that isn't listed, add it, name it here, and update this number. Never drop a listed test to keep the count.
+**Added while building**
+- When a cafe name contains `</script>` or similar, the embedded map data should stay inside its script tag (`cannot be broken out of by a cafe name containing </script>`). Added after an automated security review found the JSON escape did nothing.
+
+- Test count before: 22 . Test count when done: 35 (12 planned lines, each with an automated test, plus 1 added while building; the phone lines are also checked by hand in the browser pane). If building shows a test is needed that isn't listed, add it, name it here, and update this number. Never drop a listed test to keep the count.
 
 ## 4. Not in this plan
 

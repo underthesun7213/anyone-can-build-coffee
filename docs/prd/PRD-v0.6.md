@@ -54,7 +54,13 @@ A cafe can have several methods. Each method has a code, used in the data, filte
 | Pre-made | `premade` | Pre-made or packaged | 作り置き / パック |
 
 - **Priority:** the Espresso group is primary. Every listed cafe must have its espresso status recorded: `espresso_semi`, `espresso_auto` or `espresso_none`. For a chain store, the chain's status is its status (F9). The other groups are secondary: recorded when found, never required.
-- **What is recorded:** only the type (semi-automatic, fully automatic, or none). Brands and models are not recorded. Examples: Tully's Coffee is semi-automatic espresso. Doutor's main blend is machine drip; it also sells espresso drinks (likely on fully automatic machines), but its own menu notes that some stores use strong drip coffee instead of espresso. So Doutor is recorded at chain level as `espresso_auto` + `batch_brew` ([research/chains-data-a.md](../research/chains-data-a.md) §2).
+- **What is recorded:** only the type (semi-automatic, fully automatic, or none). Brands and models are not recorded. 
+- **Which status (decided 2026-11-27):** what counts is whether the cafe **serves espresso or an Americano**.
+  - Serves them, made on a semi-automatic machine → `espresso_semi`. Made on a fully automatic machine → `espresso_auto`.
+  - Does not serve them → `espresso_none`. This applies even if it sells lattes or other milk drinks made with espresso. Mention those in the chain note or cafe note.
+- **Examples:**
+  - Tully's Coffee is `espresso_semi`.
+  - Doutor is `espresso_none` + `batch_brew`. Its main coffee is machine drip, and it serves no espresso or Americano. Some stores also sell lattes, which its chain note says ([research/chains-data-a.md](../research/chains-data-a.md) §2).
 - **Curation order:** cafes that make espresso on a machine are researched and added first.
 - `premade` is recorded **only when known**. It appears on the detail page and has no filter.
 - Batch brew hold time is not tracked.

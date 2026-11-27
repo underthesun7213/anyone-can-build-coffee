@@ -25,6 +25,21 @@ export const STRINGS = {
     ja: 'サンプルデータです。実在のカフェではありません。',
   },
   notFoundTitle: { en: 'Page not found', ja: 'ページが見つかりません' },
+  mapLabel: { en: 'Map of the cafes', ja: 'カフェの地図' },
+  mapLoading: { en: 'Loading the map…', ja: '地図を読み込み中…' },
+  mapFailed: {
+    en: 'The map could not load. The list below still works.',
+    ja: '地図を読み込めませんでした。下の一覧はそのまま使えます。',
+  },
+  details: { en: 'Details', ja: '詳しく見る' },
+  mapHintTouch: { en: 'Use two fingers to move the map', ja: '地図は2本指で動かせます' },
+  mapHintWheel: { en: 'Hold Ctrl and scroll to zoom the map', ja: 'Ctrlを押しながらスクロールで拡大・縮小' },
+  mapHintWheelMac: { en: 'Hold ⌘ and scroll to zoom the map', ja: '⌘を押しながらスクロールで拡大・縮小' },
+  mapMoveToggle: { en: 'Move map', ja: '地図を動かす' },
+  mapKeyboardHelp: {
+    en: 'Map: use the arrow keys to move it and + or − to zoom. Tab moves between cafes; Enter opens one.',
+    ja: '地図：矢印キーで移動、＋/−で拡大・縮小。Tabでカフェを選び、Enterで開きます。',
+  },
 } satisfies Record<string, Record<Lang, string>>;
 
 export type StringKey = keyof typeof STRINGS;

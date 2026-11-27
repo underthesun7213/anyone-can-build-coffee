@@ -146,4 +146,4 @@ Exact colour values are chosen while building and checked for contrast in both t
    - (a) Claude proposes values that pass contrast checks in both themes; the founder approves them on a local preview.
    - (b) The founder gives brand colours first.
    - *Recommendation: (a).*
-   - **Decided (2026-11-27): (a).** The founder approves the colours on a local preview before the PR.
+   - **Decided (2026-11-27): (a).** The founder approved the colours on a local preview on 2026-11-27.

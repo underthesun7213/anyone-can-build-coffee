@@ -1,6 +1,6 @@
 # Design system
 
-- 상태: 초안 (색 값은 창업자 승인 전) · 작성일: 2026-11-27 · 계획: [02-design.md](../plans/02-design.md)
+- 상태: 승인됨 (색 값은 2026-11-27 창업자가 로컬 미리보기에서 승인) · 작성일: 2026-11-27 · 계획: [02-design.md](../plans/02-design.md)
 - 원본: `src/styles/tokens.css` (색 값이 있는 유일한 파일), `src/styles/base.css`, `src/components/`
 
 ## 원칙

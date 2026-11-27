@@ -1,0 +1,58 @@
+---
+import Base from '../../../layouts/Base.astro';
+import MethodList from '../../../components/MethodList.astro';
+import { LANGS, type Lang } from '../../../lib/codes.ts';
+import { espressoMethods, loadSiteData, otherMethods } from '../../../lib/load-data.ts';
+import { withBase } from '../../../lib/lang.ts';
+import { isWebUrl } from '../../../lib/validate.ts';
+import { t } from '../../../i18n/strings.ts';
+
+export function getStaticPaths() {
+  const { cafes } = loadSiteData();
+  return LANGS.flatMap((lang) => cafes.map((cafe) => ({ params: { lang, id: cafe.id } })));
+}
+
+const lang = Astro.params.lang as Lang;
+const base = import.meta.env.BASE_URL;
+const { cafes, chains, stations } = loadSiteData();
+const cafe = cafes.find((c) => c.id === Astro.params.id)!;
+const station = stations.find((s) => s.id === cafe.stationId);
+const chain = cafe.chainId ? chains.find((c) => c.id === cafe.chainId) : undefined;
+const other: Lang = lang === 'en' ? 'ja' : 'en';
+const directions = `https://www.google.com/maps/dir/?api=1&destination=${cafe.lat},${cafe.lng}`;
+const otherList = otherMethods(cafe);
+---
+<Base lang={lang} title={cafe.name[lang]} rest={`cafe/${cafe.id}/`}>
+  <h1>{cafe.name[lang]}</h1>
+  <p lang={other}>{cafe.name[other]}</p>
+
+  <section data-section="espresso">
+    <h2>{t(lang, 'espresso')}</h2>
+    <MethodList lang={lang} methods={espressoMethods(cafe)} kind="espresso" />
+  </section>
+
+  {otherList.length > 0 && (
+    <section data-section="other">
+      <h2>{t(lang, 'otherMethods')}</h2>
+      <MethodList lang={lang} methods={otherList} kind="other" />
+    </section>
+  )}
+
+  {chain && (
+    <p data-chain-id={chain.id}>{t(lang, 'chainStore')}: {chain.name[lang]}. {chain.note[lang]}</p>
+  )}
+
+  <dl>
+    <dt>{t(lang, 'station')}</dt>
+    <dd>{station?.name[lang]}</dd>
+    <dt>{t(lang, 'address')}</dt>
+    <dd>{cafe.address[lang] || cafe.address[other]}</dd>
+  </dl>
+
+  <p>
+    {cafe.cafeUrl && isWebUrl(cafe.cafeUrl) && <a href={cafe.cafeUrl}>{t(lang, 'website')}</a>}
+    {' '}
+    <a href={directions}>{t(lang, 'directions')}</a>
+  </p>
+  <p><a href={withBase(base, `${lang}/`)}>{t(lang, 'backToList')}</a></p>
+</Base>

@@ -3,7 +3,7 @@
 - 상태: 제안됨 · 작성일: 2026-11-20 · 근거: [PRD v0.6](../prd/PRD-v0.6.md) §5, §6, §7, §8, §9, §10, §13
 - 관련: [ADR-0002](../adr/0002-four-sheet-data-model-and-csv-build.md) (시트 4개·CSV 빌드), [ADR-0003](../adr/0003-coordinates-from-osm-not-google.md) (좌표), [tech-stack.md](tech-stack.md) §5
 
-**현행:** 검증 스크립트도 데이터 파일도 아직 없다. 이 문서는 앞으로 만들 `scripts/validate-data`가 지킬 **명세**다.
+**현행 (2026-11-27):** `scripts/validate-data.ts`가 §4.1–§4.8의 **오류(E) 규칙**을 구현했다([계획 01](../plans/01-skeleton.md)). 경고(W) 규칙, §4.9 빌드 후 확인, `astro check`는 아직 없다. 이 문서는 그 나머지까지 포함한 **명세**다.
 
 ## 1. 목적
 
@@ -65,7 +65,7 @@ W  V-CA11 cafes!9     lat,lng     35.70,139.80  1,820 m from nearest station "sh
 | V-F01 | E | `data/cafes.csv`, `chains.csv`, `methods.csv`, `stations.csv` 4개가 있고 CSV로 파싱된다(모든 행의 열 수가 헤더와 같음) | §9 |
 | V-F02 | E | 각 시트에 §9의 열이 모두 있다. 열 이름은 정확히 일치해야 한다 | §9 |
 | V-F03 | W | §9에 없는 열이 있다. 빌드는 그 열을 읽지 않고 출력하지도 않는다 | §9 |
-| V-F04 | E | `cafes.internal_note`에 값이 있는 행이 하나라도 있다. 게시 CSV와 공개 레포로 내부 메모가 나갔다는 뜻이다. ADR-0002의 시트 분리가 결정되면 이 열 자체가 없어야 한다 | §9 "Never published" |
+| ~~V-F04~~ | — | 삭제(2026-11-27). `internal_note`는 공개돼도 괜찮다고 결정했다(ADR-0002). 사이트에 보여 주지 않을 뿐 검사하지 않는다 | — |
 | V-F05 | E | `stations`에 1행 이상, `cafes`에 1행 이상 있다 | §7 SC-01·SC-02 |
 
 ### 4.2 공통 형식
@@ -82,7 +82,7 @@ W  V-CA11 cafes!9     lat,lng     35.70,139.80  1,820 m from nearest station "sh
 
 | ID | 심각도 | 규칙 | 근거 |
 |---|---|---|---|
-| V-CA01 | E | `name_en`, `name_ja` 중 하나 이상 있다 | §9, §10 |
+| V-CA01 | E | `name_en`과 `name_ja`가 **둘 다** 있다 (결정 2026-11-27) | §9, §10 |
 | V-CA02 | E | `address_en`, `address_ja` 중 하나 이상 있다 | §9 |
 | V-CA03 | E | `coord_source`는 `osm` 또는 `geocoded`다 | §9, ADR-0003 |
 | V-CA04 | W | `coord_source = osm`인데 `osm_id`가 비어 있다 | ADR-0003 |
@@ -101,8 +101,8 @@ W  V-CA11 cafes!9     lat,lng     35.70,139.80  1,820 m from nearest station "sh
 
 | ID | 심각도 | 규칙 | 근거 |
 |---|---|---|---|
-| V-CH01 | E | `name_en`, `name_ja` 중 하나 이상 있다 | §9, F9 |
-| V-CH02 | W | `name_en`, `name_ja` 중 하나가 비어 있다. 체인 페이지는 두 이름을 모두 보여 준다 | F9 |
+| V-CH01 | E | `name_en`과 `name_ja`가 **둘 다** 있다 (결정 2026-11-27) | §9, F9 |
+| ~~V-CH02~~ | — | 삭제(2026-11-27). V-CH01이 두 이름을 모두 요구한다 | — |
 | V-CH03 | E | `site_url`이 있다 | F9 "official website" |
 | V-CH04 | W | `note_en` 또는 `note_ja`가 비어 있다 | F9 |
 | V-CH05 | E | `checked_at`이 있다(형식은 V-C02) | §9 |
@@ -125,7 +125,7 @@ W  V-CA11 cafes!9     lat,lng     35.70,139.80  1,820 m from nearest station "sh
 
 ### 4.6 에스프레소 상태 (시트 간 규칙)
 
-PRD는 "모든 카페는 에스프레소 상태를 가진다"(§5)고 하면서, 동시에 "반자동과 전자동 머신을 모두 가진 카페는 'Hand-made espresso only'를 통과한다"(F2)고도 한다. 그래서 이 문서는 **에스프레소 상태를 다음 둘 중 정확히 하나**로 해석한다.
+PRD는 "모든 카페는 에스프레소 상태를 가진다"(§5)고 하면서, 동시에 "반자동과 전자동 머신을 모두 가진 카페는 'Hand-made espresso only'를 통과한다"(F2)고도 한다. 그래서 **에스프레소 상태를 다음 둘 중 정확히 하나**로 본다. 이 해석은 창업자가 승인했다(2026-11-27): 둘 다 가진 카페는 둘 다 기록한다.
 - **머신 있음**: `espresso_semi`, `espresso_auto` 중 하나 이상(둘 다 가능)
 - **머신 없음**: `espresso_none`만
 
@@ -156,7 +156,7 @@ PRD는 "모든 카페는 에스프레소 상태를 가진다"(§5)고 하면서,
 
 | ID | 심각도 | 규칙 | 근거 |
 |---|---|---|---|
-| V-B01 | E | `dist/`의 어떤 파일에도 `internal_note`에서 읽은 값이 들어 있지 않다. 열 이름 문자열 `internal_note`도 없다 | §9 |
+| V-B01 | W | 사이트 페이지(`dist/`의 HTML)에 `internal_note` 값이 보이지 않는다. 공개 CSV에는 있어도 되지만, 화면에 보여 주지는 않는다 | §9 |
 | V-B02 | E | `cafes`의 모든 id(`closed`, `moved` 포함)에 대해 `/en/cafe/{id}/`와 `/ja/cafe/{id}/` 페이지가 있다. 모든 체인 id에 대해 `/{lang}/chains/{id}/`가 있다 | F3 "URL still works", F9 |
 | V-B03 | E | 모든 HTML에 비어 있지 않은 `<title>`이 있다. `/en/…` 아래 페이지는 `<html lang="en">`, `/ja/…` 아래 페이지는 `<html lang="ja">`다 | §10 |
 | V-B04 | E | `404.html`, 언어별 오프라인 페이지, `manifest.webmanifest`, `sw.js`가 있다 | §7, §11 |
@@ -177,9 +177,9 @@ PRD는 "모든 카페는 에스프레소 상태를 가진다"(§5)고 하면서,
 
 ## 7. 열린 질문
 
-- **Q1.** "독립 카페마다 에스프레소 상태가 정확히 하나"를 위 해석대로 받아들일 것인가? 해석은 "머신 있음(반자동·전자동, 둘 다 가능)" 또는 "머신 없음"이며, F2의 "반자동과 전자동을 모두 가진 카페"와 맞추기 위한 것이다. 아니라면 `espresso_semi`와 `espresso_auto`의 공존을 금지하고 F2 문구를 바꿔야 한다.
+- ~~**Q1.**~~ 결정(2026-11-27): 위 해석대로 둔다. 반자동과 전자동을 둘 다 가진 카페는 둘 다 기록한다.
 - **Q2.** `cafes.station_id` 열을 시트에 둘 것인가? PRD는 "빌드 때 계산"이라고 하면서 시트 열로도 적었다. 이 문서는 계산값을 정본으로 하고, 시트 값은 다르면 경고만 하도록 했다(V-CA13). 열을 없애면 V-CA12와 V-CA13은 필요 없다.
-- **Q3.** `internal_note` 처리(V-F04)는 ADR-0002의 시트 분리 결정에 달려 있다.
-- **Q4.** 체인 이름 EN/JA를 둘 다 필수(E)로 할 것인가? 지금은 하나만 필수이고, 다른 하나가 비면 경고(V-CH02)다.
+- ~~**Q3.**~~ 결정(2026-11-27): `internal_note`는 공개돼도 괜찮다. V-F04는 삭제, V-B01은 경고로 낮췄다.
+- ~~**Q4.**~~ 결정(2026-11-27): 카페·체인·역 모두 영어·일본어 이름이 둘 다 필수다.
 - **Q5.** 공개 출시(M2) 전 `--strict`(경고도 실패)를 필수로 할 것인가?
 - **Q6.** PR 검증을 머지 필수 체크로 지정할 것인가(GitHub 브랜치 보호 설정)?

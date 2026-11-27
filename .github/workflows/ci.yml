@@ -1,0 +1,23 @@
+name: ci
+
+# Every pull request, including data-only changes (ADR-0002): validate the data,
+# build the site and run the tests. Nothing is deployed from here.
+on:
+  pull_request:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - name: Validate data
+        run: npm run validate
+      - name: Build
+        run: npx astro build
+      - name: Test
+        run: npm test

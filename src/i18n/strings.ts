@@ -25,6 +25,13 @@ export const STRINGS = {
     ja: 'サンプルデータです。実在のカフェではありません。',
   },
   notFoundTitle: { en: 'Page not found', ja: 'ページが見つかりません' },
+  mapLabel: { en: 'Map of the cafes', ja: 'カフェの地図' },
+  mapLoading: { en: 'Loading the map…', ja: '地図を読み込み中…' },
+  mapFailed: {
+    en: 'The map could not load. The list below still works.',
+    ja: '地図を読み込めませんでした。下の一覧はそのまま使えます。',
+  },
+  details: { en: 'Details', ja: '詳しく見る' },
 } satisfies Record<string, Record<Lang, string>>;
 
 export type StringKey = keyof typeof STRINGS;

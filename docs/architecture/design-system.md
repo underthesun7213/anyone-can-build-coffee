@@ -77,6 +77,9 @@ WCAG 2.x 상대 휘도로 계산했다(`tokens.css`의 값에서 직접). 글자
 | 샘플 안내 | `Base.astro` | 조용한 띠. 데이터가 샘플인 동안만 |
 | 상세 레이아웃 | `cafe/[id].astro` | 이름(두 언어) → 배지 → 다른 방식 → 체인 메모 → 역·주소 → 웹사이트·길찾기 버튼 |
 | 404 | `404.astro` | 두 언어, 같은 토큰 |
+| 지도 | `styles/map.css`, `lib/map.ts`, `client/map.ts` | 목록 위, 높이 40vh(220–480 px). Leaflet + OSM 타일, 출처 항상 표시([ADR-0007](../adr/0007-map-leaflet-osm.md)) |
+| 지도 마커 | `lib/map.ts` `markerHtml` | 44 px 원, 상태 배지와 같은 토큰·아이콘. 둘 다 있으면 반자동. 키보드로 Tab → Enter |
+| 지도 팝업 | `lib/map.ts` `popupHtml` | 이름, 상태 배지, "Details/詳しく見る" 링크(44 px). 글자는 이스케이프 |
 
 ## 아이콘
 
